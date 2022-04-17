@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>新增户主</title>
+
+    <!--pickers css-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-datepicker/css/datepicker-custom.css}" />-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-timepicker/css/timepicker.css}" />-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-colorpicker/css/colorpicker.css}" />-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-daterangepicker/daterangepicker-bs3.css}" />-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-datetimepicker/css/datetimepicker-custom.css}" />-->
+
+    <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+    <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start 导航栏-->
+    <div  th:insert="~{backcommons/nav/sidenav :: myside}"></div>
+    <!-- left side end-->
+
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div class="header-section">
+
+            <!--toggle button start 导航栏缩放-->
+            <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+            <!--toggle button end-->
+
+            <!--notification menu start 头菜单-->
+            <div  th:insert="~{backcommons/nav/head :: myhead}"></div>
+            <!--notification menu end -->
+
+        </div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+                户主管理
+            </h3>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">户口管理</a>
+                </li>
+                <li class="active" id="addHouId"> 新增户主 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start 页面内容-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-10" style="margin-left: 5%;">-->
+<!--                <section class="panel">-->
+<!--                    <header class="panel-heading">-->
+<!--                        新增户主-->
+<!--                    </header>-->
+<!--                    <div class="panel-body">-->
+<!--                        <form role="form" th:action='@{/HouseHold}' method="post" th:onsubmit="return check()" >-->
+<!--                            <div class="form-inline" >-->
+<!--                                <label>户主姓名</label>-->
+<!--                                <input type="text" name="houseName" placeholder="姓名">-->
+<!--                                <label>民族&nbsp;</label>-->
+<!--                                <select id="national" name="ethnic"></select>-->
+<!--                                <label>&nbsp;性别&nbsp;</label>-->
+<!--                                <select name="gender">-->
+<!--                                    <option value="0" selected>男</option>-->
+<!--                                    <option value="1">女</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                            <div data-toggle="distpicker" class="form-inline" style="margin-top: 15px">-->
+<!--                                <label> 家庭地址</label>-->
+<!--                                <select data-province="福建省" name="province" id="province" ></select>-->
+<!--                                <select data-city="福州市" name="city" id="city" ></select>-->
+<!--                                <select data-district="闽侯县" name="area" id="area" ></select>-->
+<!--                                <input type="text" placeholder="具体地址" name="addr" id="addr">-->
+<!--                            </div>-->
+<!--                            <div class="form-inline" style="margin-top: 15px">-->
+<!--                                <label>身 份 证&nbsp;&nbsp;</label>-->
+<!--                                <input type="text" name="idCard" placeholder="身份证">-->
+<!--                            </div>-->
+<!--                            <div class="form-inline" style="margin-top: 15px">-->
+<!--                                <label>户 籍&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
+<!--                                <input type="text" name="census">-->
+
+<!--                                <label>&nbsp;生日&nbsp;&nbsp;&nbsp;</label>-->
+<!--                                <input type="date" style="width:20%;height: 25px" id="birthday" name="birthday" >-->
+<!--                            </div>-->
+<!--                            <div class="form-inline" style="margin-top: 15px">-->
+<!--                                <label>婚姻状况</label>-->
+<!--                                <select name="maritalStatus" id="">-->
+<!--                                    <option value="0" selected>已婚</option>-->
+<!--                                    <option value="1">未婚</option>-->
+<!--                                </select>-->
+<!--                                <label>&nbsp;&nbsp;搬迁状况</label>-->
+<!--                                <select name="housingStatus">-->
+<!--                                    <option value="0" selected>正常</option>-->
+<!--                                    <option value="1">搬迁</option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+
+<!--                            <button type="submit" class="btn btn-primary" style="margin-top: 15px">Submit</button>-->
+<!--                        </form>-->
+
+<!--                    </div>-->
+<!--                </section>-->
+<!--            </div>-->
+<!--            </div>-->
+
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            新增户主
+                            <span class="tools pull-right">
+                                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body">
+                            <form role="form" th:action='@{/HouseHold}' method="post" th:onsubmit="return check()" >
+                                <div class="form-inline" >
+                                    <label>户主姓名</label>
+                                    <input type="text" name="houseName" placeholder="姓名" class="form-control">
+                                    <label>民族&nbsp;</label>
+                                    <select name="ethnic" class="form-control">
+                                        <option value="汉族">汉族</option>
+                                        <option value="蒙古族">蒙古族</option>
+                                        <option value="回族">回族</option>
+                                        <option value="藏族">藏族</option>
+                                        <option value="维吾尔族">维吾尔族</option>
+                                        <option value="苗族">苗族</option>
+                                        <option value="彝族">彝族</option>
+                                        <option value="壮族">壮族</option>
+                                        <option value="布依族">布依族</option>
+                                        <option value="朝鲜族">朝鲜族</option>
+                                        <option value="满族">满族</option>
+                                        <option value="侗族">侗族</option>
+                                        <option value="瑶族">瑶族</option>
+                                        <option value="白族">白族</option>
+                                        <option value="土家族">土家族</option>
+                                        <option value="哈尼族">哈尼族</option>
+                                        <option value="哈萨克族">哈萨克族</option>
+                                        <option value="傣族">傣族</option>
+                                        <option value="黎族">黎族</option>
+                                        <option value="傈僳族">傈僳族</option>
+                                        <option value="佤族">佤族</option>
+                                        <option value="畲族">畲族</option>
+                                        <option value="高山族">高山族</option>
+                                        <option value="拉祜族">拉祜族</option>
+                                        <option value="水族">水族</option>
+                                        <option value="东乡族">东乡族</option>
+                                        <option value="纳西族">纳西族</option>
+                                        <option value="景颇族">景颇族</option>
+                                        <option value="柯尔克孜族">柯尔克孜族</option>
+                                        <option value="土族">土族</option>
+                                        <option value="达斡尔族">达斡尔族</option>
+                                        <option value="仫佬族">仫佬族</option>
+                                        <option value="羌族">羌族</option>
+                                        <option value="布朗族">布朗族</option>
+                                        <option value="撒拉族">撒拉族</option>
+                                        <option value="毛南族">毛南族</option>
+                                        <option value="仡佬族">仡佬族</option>
+                                        <option value="锡伯族">锡伯族</option>
+                                        <option value="阿昌族">阿昌族</option>
+                                        <option value="普米族">普米族</option>
+                                        <option value="塔吉克族">塔吉克族</option>
+                                        <option value="怒族">怒族</option>
+                                        <option value="乌孜别克族">乌孜别克族</option>
+                                        <option value="俄罗斯族">俄罗斯族</option>
+                                        <option value="鄂温克族">鄂温克族</option>
+                                        <option value="德昂族">德昂族</option>
+                                        <option value="保安族">保安族</option>
+                                        <option value="裕固族">裕固族</option>
+                                        <option value="京族">京族</option>
+                                        <option value="塔塔尔族">塔塔尔族</option>
+                                        <option value="独龙族">独龙族</option>
+                                        <option value="鄂伦春族">鄂伦春族</option>
+                                        <option value="赫哲族">赫哲族</option>
+                                        <option value="门巴族">门巴族</option>
+                                        <option value="珞巴族">珞巴族</option>
+                                        <option value="基诺族">基诺族</option>
+                                    </select>
+                                    <label>&nbsp;性别&nbsp;</label>
+                                    <select name="gender" class="form-control">
+                                        <option value="0" selected>男</option>
+                                        <option value="1">女</option>
+                                    </select>
+                                </div>
+                                <div data-toggle="distpicker" class="form-inline" style="margin-top: 15px">
+                                    <label> 家庭地址</label>
+                                    <select data-province="福建省" name="province" id="province" class="form-control"></select>
+                                    <select data-city="福州市" name="city" id="city" class="form-control"></select>
+                                    <select data-district="闽侯县" name="area" id="area" class="form-control"></select>
+                                    <input type="text" placeholder="具体地址" name="addr" id="addr" class="form-control">
+                                </div>
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>身 份 证&nbsp;&nbsp;</label>
+                                    <input type="text" name="idCard" placeholder="身份证" class="form-control">
+                                </div>
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>户 籍&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input type="text" name="census" class="form-control">
+
+                                    <label>&nbsp;生日&nbsp;&nbsp;&nbsp;</label>
+                                    <input type="date" style="width:20%;" id="birthday" name="birthday" class="form-control">
+                                </div>
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>婚姻状况</label>
+                                    <select name="maritalStatus" id="" class="form-control">
+                                        <option value="0" selected>已婚</option>
+                                        <option value="1">未婚</option>
+                                    </select>
+                                    <label>&nbsp;&nbsp;搬迁状况</label>
+                                    <select name="housingStatus" class="form-control">
+                                        <option value="0" selected>正常</option>
+                                        <option value="1">搬迁</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success" style="margin-top: 15px">提交</button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+
+        <!--body wrapper end-->
+
+        <!--footer section start 页脚-->
+        <footer>
+            <div th:insert="~{backcommons/nav/footer :: myfooter}"></div>
+        </footer>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<script>
+
+    function check(){
+        const pro = $("#province").val();
+        const city = $("#city").val();
+        const area = $("#area").val();
+        const addr = $("#addr").val();
+        if (pro === '' || city === '' || area === ''){
+            alert("地址请正确选择！")
+            return false;
+        }else if (addr === ''){
+            alert("详细地址不能为空");
+            $("#addr").select();
+            return false;
+        }
+    }
+
+    var national = [
+        "汉族", "壮族", "满族", "回族", "苗族", "维吾尔族", "土家族", "彝族", "蒙古族", "藏族", "布依族", "侗族", "瑶族", "朝鲜族", "白族", "哈尼族",
+        "哈萨克族", "黎族", "傣族", "畲族", "傈僳族", "仡佬族", "东乡族", "高山族", "拉祜族", "水族", "佤族", "纳西族", "羌族", "土族", "仫佬族", "锡伯族",
+        "柯尔克孜族", "达斡尔族", "景颇族", "毛南族", "撒拉族", "布朗族", "塔吉克族", "阿昌族", "普米族", "鄂温克族", "怒族", "京族", "基诺族", "德昂族", "保安族",
+        "俄罗斯族", "裕固族", "乌孜别克族", "门巴族", "鄂伦春族", "独龙族", "塔塔尔族", "赫哲族", "珞巴族"
+    ];
+
+    window.onload = function (){
+
+        const subMenu = document.getElementById("addHouId").className;
+        if (subMenu === "active"){
+            $("#addHouse").addClass("active");
+        }
+
+        // var nat = document.getElementById ("national");
+        // for ( var i = 0; i < national.length; i++)
+        // {
+        //     var option = document.createElement ('option');
+        //     option.value = i;
+        //     var txt = document.createTextNode (national[i]);
+        //     option.appendChild (txt);
+        //     nat.appendChild (option);
+        // }
+
+        $("#birthday").val("2021-01-06")
+        //得到当前时间
+        const date_now = new Date();
+        //得到当前年份
+        const year = date_now.getFullYear();
+        //得到当前月份
+        //注：
+        //  1：js中获取Date中的month时，会比当前月份少一个月，所以这里需要先加一
+        //  2: 判断当前月份是否小于10，如果小于，那么就在月份的前面加一个 '0' ， 如果大于，就显示当前月份
+        const month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
+        //得到当前日子（多少号）
+        const date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
+        //设置input标签的max属性
+        $("#birthday").attr("max",year+"-"+month+"-"+date);
+
+    }
+
+    function gettext(){
+        var re = $("#national").find("option:selected").text();
+        alert(re);
+    }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--pickers plugins-->
+<!--<script type="text/javascript" th:src="@{/xtheme/js/bootstrap-datepicker/js/bootstrap-datepicker.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/xtheme/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/xtheme/js/bootstrap-daterangepicker/moment.min.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/xtheme/js/bootstrap-daterangepicker/daterangepicker.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/xtheme/js/bootstrap-colorpicker/js/bootstrap-colorpicker.js}"></script>-->
+<!--<script type="text/javascript" th:src="@{/xtheme/js/bootstrap-timepicker/js/bootstrap-timepicker.js}"></script>-->
+
+<!--pickers initialization-->
+<!--<script th:src="@{/xtheme/js/pickers-init.js}"></script>-->
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+</body>
+</html>

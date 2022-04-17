@@ -1,0 +1,27 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.HouseHoldMapper">
+
+    <select id="HouseHoldInfo" resultType="HouseHold">
+        select house_id,house_name
+        from household
+        where housing_status='0';
+    </select>
+
+    <select id="houseById" resultMap="HouseIdInfo">
+        SELECT * FROM household h,resident r
+        WHERE h.house_Id=r.house_id
+    </select>
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“HouseIdInfo”  是为了更好识别是位置 -->
+    <resultMap type="HouseIdInfoVo" id="HouseIdInfo">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+        <id column="house_id" property="houseId" />
+        <result column="house_name" property="houseName" />
+        <!-- 组合外键 association 一对一  一对多-->
+        <association property="resident" javaType="Resident">
+            <id column="person_id" property="personId" />
+            <result column="name" property="name" />
+        </association>
+    </resultMap>
+
+</mapper>

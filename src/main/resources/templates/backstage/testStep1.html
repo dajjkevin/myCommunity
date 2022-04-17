@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>Login</title>
+<!--    <link rel="stylesheet" th:href="@{/vendor/bootstrap-4.3.1-dist/css/bootstrap.min.css}">-->
+    <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+    <link th:href="@{/xtheme/css/jquery.stepy.css}" rel="stylesheet">
+    <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+</head>
+
+<body class="login-body">
+<div class="container" style="margin-top: 65px">
+    <div class="login-wrap">
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="fw-title" style="color: white">找回密码操作</h4>
+                <div class="box-widget">
+                    <div class="widget-head clearfix">
+                        <div id="top_tabby" class="block-tabby pull-left">
+                        </div>
+                    </div>
+                    <div class="widget-container">
+                        <div class="widget-block">
+                            <div class="widget-content box-padding">
+                                <form id="stepy_form" class=" form-horizontal left-align form-well" method="post">
+                                    <fieldset title="Step 1">
+                                        <legend >验证邮箱</legend>
+                                        <div class="form-group">
+                                            <label class="col-md-2 col-sm-2 control-label" style="color: white">Username</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input class="form-control" name="name" type="text"/>
+                                            </div>
+                                        <button class="finish btn btn-info btn-extend" style="margin-right: 250px"> 获取验证码</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 col-sm-2 control-label" style="color: white">Email Address</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input class="form-control" name="email" type="email"/>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset title="Step 2">
+                                        <legend>确认密码</legend>
+                                        <div class="form-group">
+                                            <label class="col-md-2 col-sm-2 control-label">First Name</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="pwd" placeholder="First Name" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 col-sm-2 control-label">Last Name</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="checkPwd" placeholder="Last Name" class="form-control">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <button type="submit" class="finish btn btn-info btn-extend"> Finish!</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    </div>
+</div>
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.validate.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.stepy.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<script>
+    /*=====STEPY WIZARD====*/
+    $(function() {
+        $('#default').stepy({
+            backLabel: 'Previous',
+            block: true,
+            nextLabel: 'Next',
+            titleClick: true,
+            titleTarget: '.stepy-tab'
+        });
+    });
+    /*=====STEPY WIZARD WITH VALIDATION====*/
+    $(function() {
+        $('#stepy_form').stepy({
+            backLabel: 'Back',
+            nextLabel: 'Next',
+            errorImage: true,
+            block: true,
+            description: true,
+            legend: false,
+            titleClick: true,
+            titleTarget: '#top_tabby',
+            validate: true
+        });
+        $('#stepy_form').validate({
+            errorPlacement: function(error, element) {
+                $('#stepy_form div.stepy-error').append(error);
+            },
+            rules: {
+                'name': 'required',
+                'email': 'required'
+            },
+            messages: {
+                'name': {
+                    required: 'Name field is required!'
+                },
+                'email': {
+                    required: 'Email field is requerid!'
+                }
+            }
+        });
+    });
+
+    $('#stepy_form-next-0').blur(function (){
+        console.log("asda")
+    })
+</script>
+
+<script>
+
+
+
+    function forget(){
+        location.href='[[@{/excel/excelExport}]]/'+carList;
+    }
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<!-- Placed js at the end of the document so the pages load faster -->
+<!--<script type="text/javascript" th:src="@{/vendor/jquery/jquery-3.3.1.js}"></script>-->
+
+</body>
+</html>

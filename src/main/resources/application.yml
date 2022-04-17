@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gcsmdb?useUnicode=true&characterEncoding=utf-8&&useSSL=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  mail:
+    #smtp服务主机  qq邮箱则为smtp.qq.com;163邮箱是smtp.163.com
+    host: smtp.qq.com
+    #服务协议
+    protocol: smtp
+    # 编码集
+    default-encoding: UTF-8
+    #发送邮件的账户
+    username: 1356262040@qq.com
+    #授权码
+    password: efisrndpobmdjdeh
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  mvc:
+    view:
+      # 在构建 URL 时添加到视图名称后的后缀(默认值： .html)
+      suffix: .html
+    hiddenmethod:
+      filter:
+        #开启删除(DelMapper)/修改(PutMapper)隐藏方法 默认值是关闭
+        enabled: true
+    #静态资源
+    static-locations: /static/**
+
+mybatis-plus:
+  configuration:
+    #数据交互信息打印到控制台
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #指定Mybatis-Plus的Mapper文件
+  mapper-locations: classpath*:com/abc/gcsmsys/mapper/xml/*.xml
+  #实体的默认映射包
+  type-aliases-package: com.abc.gcsmsys.domain
+
+logging:
+  level:
+    com.abc.gcsmsys: INFO
+  file:
+    name: ./logs/core.log
+  root: INFO
+
+
+system:
+
+alipay:
+  app_id: 2021000117614355
+  merchant_private_key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDWD0n18V7mca+rDLynYPnzFmtiesv/76L7Ao0K7vmzsQ1MGdksmu7PBoupWfVTif+6pUVA5Xl7UN7fSqgQ1WvH0wvPU1uyh36IkZ7dvaXPFwRGxySBljEhFn4BrvLVvoBEqnTihOpHkhIJl5LrqUUWOWWGPAPfH55UeU8xnh5tCRpI/SG6VDmn84rmd+AjQ8a40MGKnnZdRYnt7KkNGfqizAHCxXXecH0leOKc09s2/NdYoc8voZDv15uCurBlNTAuE2GlwTFKMjpCD1OHLbZavQ2d4pjrU5OgJTITfWDKtXAfkH3cI+UfIYbLNf6ZWNvATLW8/priNFq+Xipwa8TBAgMBAAECggEANqrG57GR2+ZSx6tEDrb8fnFOUWMs8BriE5quLImlaZeg3ruHNBYJQQPZ7REVTxViIueMTSuNn8micYIec9YdZXXngTY3p9tknDocSWLikoW9SNoY36NcvqeA3KsyRxYUqfSiTytErayHQL3d/qNHCorz+5keIAByLf6hE/neqVd/NiVfNS5S08LGoChmxJp8gaCUe5O0/J0zDHqAcQnEnfufv0rFciQmEPjG7mXXQCW2Lvj94n3sG/DjT2ioyGpdbGZBAkf27B6rzqgj5ZBwXox6UvyhpT0Mz3YpGWlbY+qergK7by8IolTDHCqM2LVSngZFk2iiKe3sH9gDjF8c1QKBgQDrVZmncc5evReOjQwDVnVgf3b8019qLUXMgzSU2OniP9xfOgppHmWs+1WpMFjTxCeDXPx5S5l4rseOUOotOnUUaqFY1vwwCE9wRlkgOh/RykPXlkSjneneyuHa3swUHosN8m+dVC9Q6dsa8BlT9lE9EiZe5973BClCvAzusQT0OwKBgQDo221OpvbTxe1Ha59dCXq7Q9eOeclHf5QQqN8ReRc2/xlVnVNhmGr83xHlY0qf1lyE/pRzlk2WjQEyIOnaoBB1OuxUomXZSf+q/VlhDeEAbs9+oVJbwNo0JQOUo4/1XKTzv67jeBY7UhXtj/xkmFIDDxv9gw9u95Hz9hQu6KyHMwKBgQDeRj+W0/sjqF4zmi0aifLbbgkoy0x3sMMYY2SqoiZmOAMhPmTO3JMUS1+hKbT8b20SuiUNO8Z9IjgBx5MnnOswmXZDvur7Qx4k4Y0Uz1F2iSCC4794+pIGiIHChGUlK6QTTET3yKfYOMlmLBkAIMqicB4lzcPec+O00IE2gaQ4OQKBgDXMBBvovRu+HYyjk6Tl/MHo8ZMMFfF7yxRyP18FD9T36L175Himwwj67GKHpwT4fFWJj3iI4BIJL56KNhz5X/QFkfYXstoZm4TAlXazwyjbcPq7gJCMJJ1pc8NSan7wUXey8E/DPbekxkYlPtVqz3+/bOML9XPYpJKtZopT3RA7AoGBAKHkrImKtDNh4BKiZ1CPBH4VudHfxRGX6igbWt7rNdKQ1piGFDq5anw/AVC/Akgsepty6sAnP7zG3b0ltIAljH0bfVLUfX6FZ0tfdTUo1jBOMLOLJ28NVmUfT1t+zgedb5oXT07fuBpjQNhIGMJT/h3RGrHja033ga5j3KxjD9V9
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhm4DeEl3mW+PuDBhvf3BZ6LHIm9dwtG0rFAyGB8vlbkwrfnAssw9NerwU59UkaQ9c4rg6wv2vUnx2P75lz4+v7vKP5Rs/fRj03V80Y7FL/R8hVSdB9bLyn0+RV2ni239vLq6sMSRSNszfMVLMlrguYBLNoadT080fjpCb0W43erpxfdTaMAnVputQUrzaopgI/9u+JtPzWuo48lQ1pMboG1jFR6ZEHTeg/RzDqTO37PMVTyIP6rr4876AcheRpYSoz6bMXfmwBh8zA+6QUnJxUO/Bp8oOEF/xRThkBfSOQIgqxE66c34okZCfJTLFwYSuQ4WykdzRdXiR7P/UKUozwIDAQAB
+  #  notify_url: http://windy.free.idcfengye.com/order/returnNotify
+  notify_url: http://oxl.vaiwan.com/user/returnNotifyUrl
+  return_url: http://localhost:4545/account/center
+  FORMAT: JSON
+  sign_type: RSA2
+  charset: utf-8
+  gatewayUrl: openapi.alipaydev.com
+  log_path: C:\\
+
+

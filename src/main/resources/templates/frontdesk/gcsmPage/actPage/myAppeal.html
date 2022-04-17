@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <META HTTP-EQUIV='pragma' CONTENT='no-cache'>
+    <META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'>
+    <META HTTP-EQUIV='expires' CONTENT='0'>
+
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <title>我的投诉/建议</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<div>
+    <h3 style="text-align: center;margin-top: 5%">我的建议箱</h3>
+
+    <div class="row mt-30">
+        <div class="col-lg-3">
+        <!--   左   -->
+        </div>
+
+        <div class="col-lg-6">
+<!--            <div class="sidebar-widget search">-->
+<!--                <form class="search-form" th:action="@{/user/showAct}">-->
+<!--                    <input type="hidden" name="pageNum" value="1">-->
+<!--                    <input class="form-control" name="sActTheme" placeholder="请输入查找信息..." type="text" th:value="${param.sActTheme}">-->
+<!--                    <button class="search-button" type="submit"><i class="bx bx-search"></i></button>-->
+<!--                </form>-->
+<!--            </div>-->
+        </div>
+
+        <div class="col-lg-3">
+        <!--  右 -->
+        </div>
+    </div>
+
+</div>
+
+<section class="cart-area ptb-70">
+    <div class="container">
+        <form class="cart-controller">
+            <div class="cart-table table-responsive">
+                <table class="table table-bordered" th:if="${not #lists.isEmpty(myAppealById)}">
+                    <thead>
+                        <tr>
+                            <th scope="col">标题</th>
+                            <th scope="col">我的投诉/建议</th>
+                            <th scope="col">我的手机</th>
+                            <th scope="col">我的邮箱</th>
+                            <th scope="col">投诉时间</th>
+                            <th scope="col">处理内容</th>
+                            <th scope="col">处理结果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="myApById:${myAppealById}">
+                            <td class="product-name"><a th:text="${myApById.title}"></a></td>
+                            <td class="product-name" th:text="查看内容" th:onclick="|userAppealClick(${myApById.appealId})|" style="cursor: pointer"></td>
+                            <td class="product-name"><a th:text="${myApById.uphone}"></a></td>
+                            <td class="product-name"><a th:text="${myApById.uemail}==''?'暂无':(${myApById.uemail}==''?'暂无':${myApById.uemail})"></a></td>
+                            <td class="product-name"><a th:text="${#dates.format(myApById.appTime,'yyyy-MM-dd HH:mm:ss')}"></a></td>
+                            <td th:text="社区回复" th:onclick="|adminAppealClick(${myApById.appealId})|"  style="cursor: pointer"></td>
+                            <td class="product-name" th:text="${myApById.replyStatus} == '0'?'未处理':'已处理'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        <div class="alert" th:if="${#lists.isEmpty(myAppealById)}" style="text-align: center">亲，暂无相关信息</div>
+    </div>
+</section>
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script type="text/javascript">
+
+    function userAppealClick(appId){
+        $.ajax({
+            type:'GET',
+            url:'/user/appealById/'+ appId,
+            success:function(res){
+                if (res.code === '0'){
+                    layer.open({
+                        type: 1,
+                        title: '我的投诉与建议',
+                        border:"1px",
+                        // shadeClose: true, //开启点击遮罩关闭层
+                        area : ['35%' ,'400px'],
+                        offset : ['70px', ''],
+                        content:  res.data.detail,    //弹框内容,页面层
+                    });
+                }
+            }
+        });
+    }
+
+    function adminAppealClick(appId){
+        $.ajax({
+            type:'GET',
+            url:'/user/appealById/'+ appId,
+            success:function(res){
+                var dealWith = res.data.dealWith;
+                if (dealWith == '' || dealWith == null){
+                    dealWith = "暂无回复内容";
+                }
+                if (res.code === '0'){
+                    layer.open({
+                        type: 1,
+                        title: '基层人员处理内容',
+                        border:"1px",
+                        // shadeClose: true, //开启点击遮罩关闭层
+                        area : ['35%' ,'400px'],
+                        offset : ['70px', ''],
+                        content: dealWith    //弹框内容,页面层
+                    });
+                }
+            }
+        });
+    }
+
+    function doQuery(pageNum){
+
+        //form表单中含有页数，默认第1页
+        document.forms[0].pageNum.value = pageNum;
+        document.forms[0].submit();
+    }
+
+
+
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+</body>
+
+</html>

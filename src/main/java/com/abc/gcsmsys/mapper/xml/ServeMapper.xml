@@ -1,0 +1,48 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.ServeMapper">
+
+    <select id="findServeInfo" resultMap="findServeInfoInfo">
+        SELECT *
+        FROM serve s
+        LEFT JOIN serve_type st ON s.serve_type_id = st.serve_type_id
+        WHERE 1=1
+        <if test="search.serveName !=null and search.serveName !=''">
+            and s.serve_name like CONCAT('%',#{search.serveName},'%')
+        </if>
+        <if test="search.phone !=null and search.phone !=''">
+            and s.phone like CONCAT('%',#{search.phone},'%')
+        </if>
+        <if test="search.serveInt != null and search.serveInt !=''">
+            and s.serve_int like CONCAT('%',#{search.serveInt},'%')
+        </if>
+        <if test="search.typeName !=null and search.typeName !=''">
+            and st.type_name like CONCAT('%',#{search.typeName},'%')
+        </if>
+    </select>
+
+
+    <select id="serveById" parameterType="int" resultMap="findServeInfoInfo">
+        SELECT *
+        FROM serve s
+                 LEFT JOIN serve_type st ON s.serve_type_id = st.serve_type_id
+        WHERE s.serve_id = #{serveId}
+    </select>
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“findServeInfoInfo”  是为了更好识别是位置 -->
+    <resultMap type="Serve" id="findServeInfoInfo">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+        <id column="serve_id" property="serveId" />
+        <result column="serve_name" property="serveName" />
+        <result column="phone" property="phone" />
+        <result column="serve_int" property="serveInt"/>
+        <result column="serve_money" property="serveMoney"/>
+        <result column="serve_img" property="serveImg"/>
+        <!-- 组合外键 association -->
+        <association property="type" javaType="ServeType">
+            <id column="serve_type_id" property="serveTypeId" />
+            <result column="type_name" property="typeName" />
+        </association>
+    </resultMap>
+
+</mapper>
+

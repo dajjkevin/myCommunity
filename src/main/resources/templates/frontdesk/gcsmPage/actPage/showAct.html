@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <META HTTP-EQUIV='pragma' CONTENT='no-cache'>
+    <META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'>
+    <META HTTP-EQUIV='expires' CONTENT='0'>
+
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+
+    <title>社区活动</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<div>
+    <h2 style="text-align: center;margin-top: 3%;margin-bottom: 3%">社区活动</h2>
+
+    <div class="row mt-30">
+        <div class="col-lg-3">
+        <!--   左   -->
+        </div>
+
+        <div class="col-lg-6">
+            <div class="sidebar-widget search">
+                <form class="search-form" th:action="@{/user/showAct}" id="actForm">
+                    <input type="hidden" name="pageNum" value="1" id="sPageNum">
+                    <input class="form-control" name="sActTheme" placeholder="请输入查找信息..." type="text" th:value="${param.sActTheme}">
+                    <button class="search-button" type="submit"><i class="bx bx-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+        <!--  右 -->
+        </div>
+    </div>
+
+</div>
+
+
+<!--社区活动-->
+<section class="best-selling-area bg-color pt-70 pb-40">
+    <div class="container">
+        <div class="row" >
+            <div class="col-lg-3 col-sm-6" th:if="${not #lists.isEmpty(userPageAct)}" th:each="act:${userPageAct.records}">
+                <div class="single-best-selling">
+                    <div class="product-img">
+                        <div class="product"><img th:src="${act.actImg}" alt="Image"></div>
+                        <div class="product-x"><img th:src="${act.actImg}" alt="Image"></div>
+                        <ul>
+                            <!-- 查看 data-bs-target="#showActDtl"-->
+                            <li><a href="#" data-bs-toggle="modal" th:onclick="|actDtl(${act.actId})|">
+                                <i class="bx bx-show-alt"></i></a>
+                            </li>
+                            <!--收藏-->
+                            <li><a th:onclick="|myHeart(${act.actId})|"><i class="bx bx-heart"></i></a></li>
+<!--                            <li th:if="${act.heart.myHeart} != '1' and ${session.userFrontDesk?.userId} eq ${act.heart.userId} and ${session.userFrontDesk?.userName} != null"><a th:onclick="|myHeart(${act.actId})|" th:title="收藏活动"><i class="bx bx-heart"></i></a></li>-->
+<!--                            <li th:if="${act.heart.myHeart} == '1' and ${session.userFrontDesk?.userId} eq ${act.heart.userId} and ${session.userFrontDesk?.userName} != null"><a th:onclick="|myHeart(${act.actId})|" th:title="取消收藏"><i class="bx bxs-heart-circle"></i></a></li>-->
+                        </ul>
+                    </div>
+                    <div class="best-selling-content">
+                        <h3 th:text="${act.actTheme}"></h3>
+                        <span><a th:title="报名+${act.actTheme}+活动" style="cursor:pointer" th:onclick="|signUpAct(${act.actId})|"><i class="bx bx-location-plus"></i>报名</a></span>
+                        <b>可报人数:&nbsp;[[${act.actNum}]]</b>
+                        <br>
+                        活动时间: <br>
+                        [[${act.actStart}]]&nbsp;&nbsp;-&nbsp;&nbsp;[[${act.actEnd}]]
+                    </div>
+                </div>
+            </div>
+
+            <!-- 页码 -->
+            <div class="col-12" th:if="${not #lists.isEmpty(userPageAct.records)}">
+                <div class="pagination-area text-center">
+                    <a  class="next page-numbers"  th:onclick="|doQuery(1)|">首页</a>
+                    <a class="next page-numbers" th:if="${userPageAct.hasPrevious()}" th:onclick="|doQuery(${userPageAct.getCurrent()-1})|"><i class="flaticon-left-arrow"></i></a>
+                    <span class="" aria-current="page" th:class="${num == userPageAct.current} ?'page-numbers current':'page-numbers'"
+                          th:each="num:${#numbers.sequence(1,userPageAct.pages)}">
+                        <a th:onclick="|doQuery(${num})|">[[${num}]]</a>
+                    </span>
+                    <a  class="next page-numbers" th:if="${userPageAct.hasNext()}" th:onclick="|doQuery(${userPageAct.current+1})|"><i class="flaticon-right-arrow"></i></a>
+                    <a  class="next page-numbers"  th:onclick="|doQuery(${userPageAct.pages})|">末页</a>
+                    <p style="text-align: center;">
+                        当前第 [[${userPageAct.current}]] 页,共 [[${userPageAct.pages }]] 页,
+                        总 [[ ${userPageAct.total }]] 条记录
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 未查询到内容提示 -->
+        <div th:if="${#lists.isEmpty(userPageAct.records)}">
+            <h3 style="text-align: center">暂无活动信息</h3>
+        </div>
+
+    </div>
+
+    <!-- 单机眼睛查看详细模态窗 -->
+    <div class="modal  product-view-one" id="showActDtl">
+        <div class="modal-dialog">
+            <div class="modal-content"><button type="button" class="close" data-bs-dismiss="modal"><span
+                    aria-hidden="true"><i class="bx bx-x"></i></span></button>
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product-view-one-image">
+                            <div id="big" class="owl-carousel owl-theme">
+                                <div class="item"><img id="actImg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product-content">
+                            <input type="hidden" id="actIdHide">
+                            <h3 >活动主题：<a id="actThemeI"></a></h3>
+                            <div class=""><h4>活动时间:<span class="" id="actStart"></span></h4></div>
+                            <br>
+                            <div class=""><h4>活动结束:<span class="" id="actEnd"></span></h4></div>
+                            <br>
+                            <div class=""><h4>可报名人数:&nbsp;<span  id="actNum" style="color: #fcc606;font-weight: bold"></span>&nbsp;人</h4></div>
+                            <br>
+                            <ul class="product-info">
+                                <li><span>活动介绍:👇👇👇</span></li>
+                                <li>
+                                    <p id="actDtl" style="border:1px solid #ccc;"></p>
+                                </li>
+                            </ul>
+                            <div class="product-add-to-cart" style="margin-top: 6%">
+                                <button type="button" class="default-btn" style="cursor:pointer" th:onclick="|signUpActModel()|"> 报名 <i class="flaticon-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!--优享服务-->
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script type="text/javascript">
+
+    function doQuery(pageNum){
+
+        //form表单中含有页数，默认第1页
+        // document.forms[0].pageNum.value = pageNum;
+        $('#sPageNum').val(pageNum);
+        $('#actForm').submit();
+    }
+
+    function signUpAct(actId){ //报名活动
+        $.ajax({
+            type:'POST',
+            url:'/user/signUpAct',
+            data:{
+                actId:actId
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("报名成功",{icon:1});
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'友情提醒',
+                        btn: ['登陆去', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }else if(res.code === '-2'){
+                    layer.msg(res.msg,{icon:2});
+                }
+            }
+        })
+    }
+
+    function signUpActModel(){
+
+        const  actIdHide  = $('#actIdHide').val();//得到隐藏的活动id
+        signUpAct(actIdHide);
+    }
+    function actDtl(actId){
+
+        $.ajax({
+            type:'GET',
+            url: '/user/actById/'+actId,
+            success:function (res){
+                if(res.code ==='0'){
+                    $('#actImg').attr('src','');
+                    $('#actImg').attr('src',res.data.actImg);
+                    $('#actThemeI').html(res.data.actTheme);
+                    $("#showActDtl").modal('show');
+                    $('#actStart').html(res.data.actStart);
+                    $('#actEnd').html(res.data.actEnd);
+                    $('#actNum').html(res.data.actNum);
+                    $('#actDtl').html(res.data.actDtl);
+                    $('#actIdHide').val(res.data.actId);
+                }
+            }
+        })
+    }
+
+    function myHeart(actId,heartId){
+        $.ajax({
+            type:'POST',
+            url:'/user/actMyHeart',
+            data:{
+                actId:actId,
+                heartId:heartId,
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("收藏成功",{icon:1});
+                    window.location.reload();
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'友情提醒',
+                        btn: ['登陆去', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }else if(res.code === '-2'){
+                    layer.msg(res.msg,{icon:2});
+                }
+            }
+        })
+    }
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+</body>
+
+</html>

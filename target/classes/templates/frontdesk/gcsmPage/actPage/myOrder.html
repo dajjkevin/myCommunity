@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <META HTTP-EQUIV='pragma' CONTENT='no-cache'>
+    <META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'>
+    <META HTTP-EQUIV='expires' CONTENT='0'>
+
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+
+    <title>社区活动</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<div>
+<!--    <h3 style="text-align: center;margin-top: 3%;margin-bottom: 3%">优享服务</h3>-->
+
+    <div class="row" style="margin-top: 50px">
+        <div class="col-lg-3">
+            <!--   左   -->
+        </div>
+
+        <div class="col-lg-6 col-sm-3">
+            <div class="sidebar-widget search">
+                <form class="search-form" th:action="@{/user/returnUserOrders}" method="get" id="orderForm">
+                    <input type="hidden" name="pageNum" th:value="1" id="sPageNum">
+                    <input class="form-control" name="orderName" placeholder="请输入需要查找的商品信息..." type="text" th:value="${param.orderName}">
+                    <button class="search-button" type="submit"><i class="bx bx-search"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <!--  右 -->
+        </div>
+    </div>
+
+</div>
+
+
+<!--订单内容-->
+<section class="best-selling-area bg-color">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-lg-3" th:if="${not #lists.isEmpty(userOrders)}" th:each="userOrders:${userOrders.records}">
+                <div class="single-best-selling">
+                    <div class="sidebar-widget recent-post">
+                        <h3 class="widget-title" th:if="${userOrders.payStatus} eq '0'" style="color: red">订单未支付</h3>
+                        <h3 class="widget-title" th:if="${userOrders.payStatus} eq '1'" style="color: white">下单成功</h3>
+                        <ul>
+                            <li>
+                                <a th:onclick="|serveDtl(${userOrders.serve.serveId})|" style="cursor: pointer;" th:title="点击查看">
+                                    <span th:text="${userOrders.orderName}"></span>
+                                    <span th:text="'订单号：'+${userOrders.orderNo}"></span>
+                                    <span th:text="'￥'+${userOrders.money}" style="font-size: 25px"></span>
+                                    <img th:src="${userOrders.serve.serveImg}" width="80px" height="80px" alt="Image">
+                                </a>
+                                <span th:text="${#dates.format(userOrders.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+                                <a th:onclick ="userOrderDtl([[${userOrders.orderNo}]])" style="cursor:pointer" th:title="查看更多下单信息">更多</a>
+                            </li>
+                            <div style="margin-left: 30%">
+                                <!--支付状态0-未完成可以重新发起支付-->
+                                <button type="button" class="default-btn" th:if="${userOrders.payStatus} eq '0'" th:onclick="resPay([[${userOrders.orderNo}]],[[${userOrders.orderName}]],[[${userOrders.money}]])"> 支 付 <i class="flaticon-right"></i></button>
+                                <!--支付状态1-完成，订单正常0，点击完成 订单状态1-->
+                                <button type="button" class="default-btn" th:if="${userOrders.payStatus} eq '1' and ${userOrders.orderStatus} eq '0' " th:onclick="orderFinsh([[${userOrders.orderNo}]])"> 完 成 <i class="flaticon-right"></i></button>
+                                <!--支付状态1-完成，订单用户确认已完成1-完成，可以进行评论-->
+                                <button type="button" class="default-btn" th:if="${userOrders.payStatus} eq '1' and ${userOrders.orderStatus} eq '1' and ${userOrders.evalStatus} eq '0'" th:onclick="evaluateIndex([[${userOrders.orderId}]])"> 评 价 <i class="flaticon-right"></i></button>
+                                <!--是否评价-->
+                                <button type="button" class="default-btn btn-two btn-primary" th:if="${userOrders.payStatus} eq '1' and ${userOrders.orderStatus} eq '1' and ${userOrders.evalStatus} eq '1'" th:onclick="evaluateIndex([[${userOrders.orderId}]])"> 已 评 价 <i class="flaticon-right"></i></button>
+                                <!--订单用户确认已完成1-完成，可以进行删除-订单状态变成2(逻辑del)-->
+                                <button type="button" class="default-btn btn-two btn-three" th:if="${userOrders.orderStatus} eq '1'" th:onclick="orderDel([[${userOrders.orderNo}]])"> 删 除  <i class="flaticon-right"></i></button>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 页码 -->
+            <div class="col-12" th:if="${not #lists.isEmpty(userOrders.records)}">
+                <div class="pagination-area text-center">
+                    <a  class="next page-numbers"  th:onclick="|doQuery(1)|">首页</a>
+                    <a class="next page-numbers" th:if="${userOrders.hasPrevious()}" th:onclick="|doQuery(${userOrders.getCurrent()-1})|"><i class="flaticon-left-arrow"></i></a>
+                    <span class="" aria-current="page" th:class="${num == userOrders.current} ?'page-numbers current':'page-numbers'"
+                          th:each="num:${#numbers.sequence(1,userOrders.pages)}">
+                        <a th:onclick="|doQuery(${num})|">[[${num}]]</a>
+                    </span>
+                    <a  class="next page-numbers" th:if="${userOrders.hasNext()}" th:onclick="|doQuery(${userOrders.current+1})|"><i class="flaticon-right-arrow"></i></a>
+                    <a  class="next page-numbers"  th:onclick="|doQuery(${userOrders.pages})|">末页</a>
+                    <p style="text-align: center;">
+                        当前第 [[${userOrders.current}]] 页,共 [[${userOrders.pages }]] 页,
+                        总 [[ ${userOrders.total }]] 条记录
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 未查询到内容提示 -->
+        <div th:if="${#lists.isEmpty(userOrders.records)}" style="margin-bottom: 4%;">
+            <h3 style="text-align: center;color: #d2e4f8">暂无社区服务订单信息</h3>
+        </div>
+    </div>
+
+</section>
+<!--优享服务-->
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script type="text/javascript">
+
+    function doQuery(pageNum){
+
+        $('#sPageNum').val(pageNum);
+        $('#orderForm').submit();
+    }
+
+
+    function userOrderDtl(orderNo){
+        $.ajax({
+            type:'GET',
+            url: '/user/userOrderDtl/'+orderNo,
+            success:function (res){
+                if (res.code === '0'){
+                    layer.open({
+                        type: 1,
+                        title: '下单详细内容',
+                        border:"1px",
+                        // shadeClose: true, //开启点击遮罩关闭层
+                        area : ['30%' ,'300px'],
+                        offset : ['30px', ''],
+                        content: //弹框内容,页面层
+                            "<br>"+"<br>"+
+                            "&nbsp;&nbsp;服务人员：" + res.data.serve.serveName +"<br>" +
+                            "&nbsp;&nbsp;服务人员<i class=\"bx bx-phone-call\"></i>：" + res.data.serve.phone +"<br>" +
+                            "<br/>"+"<br>"+
+                            "&nbsp;&nbsp;下单人："+res.data.orderUserName +"<br>" +
+                            "&nbsp;&nbsp;下单手机号：" + res.data.orderPhone + "<br>" +
+                            "&nbsp;&nbsp;下单地址：" +  res.data.orderAddr[0]+res.data.orderAddr[1]+res.data.orderAddr[2]+res.data.orderAddr[3]
+                    });
+                }
+            }
+        })
+    }
+
+    function iNeed(){
+
+        var serModalTypeName = $('#serModalTypeName').html();
+        var serModalMoney = $('#serModalMoney').html();
+        var userId = '[[${session.userFrontDesk?.userId}]]';
+
+        var name = $('#name').val();
+        var phone = $('#phone').val();
+
+        var province = $('#province').val();
+        var city = $('#city').val();
+        var area = $('#area').val();
+        var addr= $('#addr').val();
+
+        if (name=='' || phone=='' || province =='' || city =='' || area == '' || addr == ''){
+            layer.msg("下单信息请填写完整",{icon:2});
+            return false;
+        }
+
+        var iNeedForm = $('#iNeedForm').serialize();
+
+        $.ajax({
+            type:'POST',
+            url:'/user/pay?'+iNeedForm,
+            data:{
+                typeName:serModalTypeName,
+                money:serModalMoney,
+                userId:userId
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("收藏成功",{icon:1});
+                    window.location.href = "/user/pay/index";
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'订单支付提醒',
+                        btn: ['确定', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }
+            }
+        })
+    }
+
+    function resPay(orderNo,orderName,money){
+        $.ajax({
+            type:'POST',
+            url:'/user/pay/resPay',
+            data:{
+                orderNo:orderNo,
+                orderName:orderName,
+                money:money
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("正在跳转支付...",{icon:1});
+                    window.location.href = "/user/pay/index";
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'订单支付提醒',
+                        btn: ['确定', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }
+            }
+        })
+    }
+
+    //用户确认订单完成
+    function orderFinsh(orderNo){
+        $.ajax({
+            type:"GET",
+            url:"/user/orderStatus?method=" + "finsh" + "&orderNo=" + orderNo,
+            success:function (res){
+                if(res.code == '0'){
+                    window.location.reload();
+                }
+            }
+        })
+    }
+
+    //用户删除订单
+    function orderDel(orderNo){
+        layer.confirm("确定删除该订单吗？",{
+            icon:0,title:'温馨提示',
+            btn: ['确定', '暂不']
+        }, function () {
+            // 按钮1的事件
+            $.ajax({
+                type:"GET",
+                url:"/user/orderStatus?method=" + "del" + "&orderNo=" + orderNo,
+                success:function (res){
+                    if(res.code == '0'){
+                        window.location.reload();
+                    }
+                }
+            })
+        }, function(){
+            // 按钮2的事件
+            layer.close();//关闭窗口
+        });
+    }
+
+    function serveDtl(serveId){
+        window.location.href = '/user/serveDtl/' + serveId;
+    }
+
+    /**评论  id是订单的 id*/
+    function evaluateIndex(orderId){
+        // alert(id)
+        window.location.href = '/user/evaluateIndex/' + orderId;
+    }
+
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+</body>
+
+</html>

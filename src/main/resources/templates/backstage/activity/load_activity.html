@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>活动列表</title>
+
+  <!--dynamic table-->
+  <link th:href="@{/xtheme/js/advanced-datatable/css/demo_page.css}" rel="stylesheet" />
+  <link th:href="@{/xtheme/js/advanced-datatable/css/demo_table.css}" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/xtheme/js/data-tables/DT_bootstrap.css}" />
+
+  <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+  <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+
+    <!--  jquery时间  -->
+    <link rel="stylesheet" type="text/css" th:href="@{/vendor/js/jquery.datetimepicker.css}"/>
+
+</head>
+
+<body class="sticky-header">
+
+<section>
+
+    <!-- left side start 导航栏-->
+    <div  th:insert="~{backcommons/nav/sidenav :: myside}"></div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div class="header-section">
+
+        <!--toggle button start 导航栏缩放-->
+        <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+        <!--toggle button end-->
+
+        <!--notification menu start 头菜单-->
+        <div  th:insert="~{backcommons/nav/head :: myhead}"></div>
+        <!--notification menu end -->
+
+        </div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading" style="margin-top: 20px">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">活动设置</a>
+                </li>
+                <li class="active" id="loadGR"> 活动列表 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start 页面内容-->
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                <section class="panel">
+                <header class="panel-heading">
+                    <span class="tools pull-right">
+                        <a href="javascript:;" class="fa fa-chevron-down"></a>
+                     </span>
+                </header>
+                <div class="panel-body">
+
+                <!-- 搜索 -->
+                <form th:action="@{/gcsm/loadAct}" method="get">
+                    <!-- 设置一个分页默认页号为 1-->
+                    <input type="hidden" name="pageNum" value="1">
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control" placeholder="请输入活动主题"  name="sActTheme"  th:value="${param.sActTheme}" />
+                        </div>
+                        <div class="form-group col-md-2" >
+                            <input type="text" id="datetimepicker2" autocomplete="off" placeholder="活动时间.." name="actTime" class="form-control" th:value="${param.actTime}"/>
+                        </div>
+                        <div class="form-group col-md-2" >
+                            <select name="isOpen" class="form-control" th:value="${isOpen}">
+                                <option value="" th:selected="${isOpen==''}"> --活动状态-- </option>
+                                <option value="0" th:selected="${isOpen=='0'}">开放</option>
+                                <option value="1" th:selected="${isOpen=='1'}">关闭</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <button class="btn btn-primary ml-2" > 查 询 <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+
+                    <div class="adv-table">
+                        <table class="display table table-bordered" th:if="${not #lists.isEmpty(pageAct)}">
+                        <thead>
+                            <tr>
+                                <th class="row">活动编号</th>
+                                <th>活动主题</th>
+                                <th>封面图</th>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th>可报名人数</th>
+                                <th>当前报名人数</th>
+                                <th>活动详情</th>
+                                <th>是否开放</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX" th:each="act:${pageAct.records}">
+                                <td th:text="${act.actId}"></td>
+<!--                                <td th:text="${resi.houseHold.houseName} != null?'${resi.houseHold.houseName}':'暂无'"></td>-->
+                                <td th:text="${act.actTheme}"></td>
+                                <td>
+                                    <img  width="100" height="100" class="py-1"  style="margin-left: 5%"
+                                          th:src="${act.actImg}"/>
+                                </td>
+                                <td th:text="${act.actStart}"></td>
+                                <td th:text="${act.actEnd}"></td>
+                                <td th:text="${act.actNum}"></td>
+                                <td th:text="${act.actJoinNum}"></td>
+                                <td th:text="点击查看详细" th:onclick="|actInfoClick(${act.actId})|"  style="cursor: pointer"></td>
+                                <td th:text="${act.isOpen=='0'?'开放':'关闭'}"></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" type="button"
+                                            th:onclick="|updateAct(${act.actId})|">修改</button>
+                                    <br><br>
+                                    <button class="btn btn-danger btn-sm" th:if="${act.isOpen == '0'} " th:onclick="|changeOpen(${act.actId},1)|">关闭</button>
+                                    <button class="btn btn-success btn-sm" th:if="${act.isOpen == '1'} " th:onclick="|changeOpen(${act.actId},0)|">恢复</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <!-- 未查询到内容提示 -->
+                        <div class="alert" th:if="${#lists.isEmpty(pageAct.records)}" style="text-align: center">暂无查找到用户信息</div>
+                    </div>
+
+
+
+                    <!-- 分页操作 -->
+                    <div class="col-md-12 text-center clearfix" th:if="${not #lists.isEmpty(pageAct.records)}">
+                            <p style="text-align: center;">
+                                当前第 [[${pageAct.current}]] 页,共 [[${pageAct.pages }]] 页,
+                                总 [[ ${pageAct.total }]] 条记录
+                            </p>
+                        <ul class="pagination">
+                            <!--首页 gt >的意思 -->
+                            <li th:if="${pageAct.current gt 1}">
+                                <a th:onclick="|doQuery(1)|">首页</a>
+                            </li>
+                            <!-- 上一页 -->
+                            <li th:if="${pageAct.hasPrevious()}">
+                                <!-- <a th:href="'/gcsm/household?pageNum=' + ${pageHouse.getCurrent()-1}" th:text="上一页"></a>-->
+                                <a  th:onclick="|doQuery(${pageAct.getCurrent()-1})|" th:text="上一页"></a>
+                            </li>
+                            <!-- 中间页 -->
+                            <li th:class="${num == pageAct.current} ?'active':''"
+                                th:each="num:${#numbers.sequence(1,pageAct.pages)}">
+                                <!-- <a th:href="@{/gcsm/household(pageNum=${num})}">[[${num}]]</a>-->
+                                <a th:onclick="|doQuery(${num})|">[[${num}]]</a>
+                            </li>
+                            <!-- 下一页 -->
+                            <li th:if="${pageAct.hasNext()}">
+                                <!-- <a th:href="'/gcsm/household?pageNum=' + ${pageHouse.current+1}" th:text="下一页"></a>-->
+                                <a th:onclick="|doQuery(${pageAct.current+1})|" th:text="下一页"></a>
+                            </li>
+                            <!-- 尾页 lt < 的意思 -->
+                            <li th:if="${pageAct.current lt pageAct.getPages()}">
+                                <!-- <a th:href="'/gcsm/household?pageNum=' + ${pageHouse.pages}">尾页</a>-->
+                                <a th:onclick="|doQuery(${pageAct.pages})|">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                </section>
+                </div>
+            </div>
+
+            <!-- Modal 活动详细 暂不用-->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myActModal" class="modal">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title">活动介绍</h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <p  id="houseText" style="border:1px solid #ccc;"></p>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                            <!--                            <button type="button" class="btn btn-success">Save changes</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
+
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <footer>
+            <div th:insert="~{backcommons/nav/footer :: myfooter}"></div>
+        </footer>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script>
+
+    function clickImg(url){
+
+        console.log(url);
+        var height = $("#displayImg").height();//拿的图片原来宽高，建议自定义宽高
+        var width = $("#displayImg").width();
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            area: [width + 'px', height + 'px'], //宽高
+            content: "<img src=" + url + " />"
+        });
+
+    }
+
+    function actInfoClick(actId){
+
+        $.ajax({
+            type:'GET',
+            url:'/gcsm/actById/'+actId,
+            success:function(res){
+                //将数据回显到弹窗
+                // console.log(res)
+                if (res.code === '0'){
+
+                    layer.open({
+                        type: 1,
+                        title: '详细内容',
+                        border:"1px",
+                        // shadeClose: true, //开启点击遮罩关闭层
+                        area : ['35%' ,'300px'],
+                        offset : ['70px', ''],
+                        content:  res.data.actDtl,    //弹框内容,页面层
+                    });
+
+                    // layer.confirm(res.data.actDtl,{icon:6,title:'操作确认',btn:['确定','再想想']},function () {
+                    //     //其他逻辑
+                    // })
+
+                    // $("#houseText").html(res.data.actDtl);
+                }
+                // $('#myActModal').modal('show');
+            },
+        });
+
+    }
+
+    function updateAct(actId){
+        window.location.href='/gcsm/updateAct/'+actId;
+    }
+
+    /**图片加载*/
+    function previewImage(file){
+
+        var img = document.getElementById('picImg');
+
+        if (file.files && file.files[0])
+        {
+
+            //准备一个文件读取器对象，并告诉它文件读取完毕之后要做什么。
+            var reader = new FileReader();
+            //成功读取了图片信息后，把读取结果赋予
+
+            //FileReader.readAsDataURL()
+            //开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容。
+            reader.onload = function(evt){
+                img.src= evt.target.result;
+                console.log("read ok! img src get value!"+evt.target.result);
+            }
+
+            console.log("start to read!")
+            reader.readAsDataURL(file.files[0]);
+
+        }
+        else{
+            img.src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0165cb5d14565ca8012155290a6d86.png%402o.png&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648213883&t=ae062e4657838e19ca98f0d8999e7456";
+            // alert("no upload file!");
+        }
+
+    }
+
+    function changeOpen(actId,isOpen){
+        console.log(actId)
+        console.log(isOpen)
+        $.ajax({
+            type: 'GET',
+            url: '/gcsm/changeOpen',
+            data:{
+                actId:actId,
+                isOpen:isOpen
+            },
+            success: function (res) {
+                window.location.reload();
+            }
+        })
+    }
+
+    function check(){ //检查地址是否填写问题
+        const pro = $("#province").val();
+        const city = $("#city").val();
+        const area = $("#area").val();
+        const addr = $("#addr").val();
+        if (pro === '' || city === '' || area === ''){
+            alert("地址请正确选择！")
+            return false;
+        }else if (addr === ''){
+            alert("详细地址不能为空");
+            $("#addr").select();
+            return false;
+        }
+    }
+
+    function timeInfo(){
+
+        $.datetimepicker.setLocale('ch');
+        $('#datetimepicker2').datetimepicker({
+            lang:'ch',
+            timepicker:false,
+            format:'Y-m-d',
+            formatDate:'Y/m/d',
+        });
+    }
+
+    window.onload = function (){
+
+        timeInfo();
+
+        const subMenu = $("#loadGR").attr("class");
+
+        if (subMenu === "active"){
+            $("#loadGrassRoots").addClass("active");
+        }
+
+        //修改操作
+        const h = $("#typeId").val();
+        // alert(h)
+        if (h != 0){
+            $("#houseIs").css("display","");
+            $("#houseIs2").css("display","");
+            // $("#houseIs2").html(" <option value=\"0\" >儿女</option>\n" +
+            //     "                                        <option value=\"1\" >父母</option>\n" +
+            //     "                                        <option value=\"2\">配偶</option>");
+        }else if (h == 0){
+
+            $("#houseIs").css("display","none");
+            $("#houseIs2").css("display","none");
+            $("#houseIs2").html("<option value=\"-1\" selected></option>");
+        }
+    }
+
+    function doQuery(pageNum){
+
+        //form表单中含有页数，默认第1页
+        document.forms[0].pageNum.value = pageNum;
+        document.forms[0].submit();
+    }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--dynamic table-->
+<script type="text/javascript" language="javascript" th:src="@{/xtheme/js/advanced-datatable/js/jquery.dataTables.js}"></script>
+<script type="text/javascript" th:src="@{/xtheme/js/data-tables/DT_bootstrap.js}"></script>
+<!--dynamic table initialization -->
+<script th:src="@{/xtheme/js/dynamic_table_init.js}"></script>
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<!--地址联动-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+<!--jquery时间-->
+<script th:src="@{/vendor/js/build/jquery.datetimepicker.full.js}"></script>
+
+</body>
+</html>
+
+

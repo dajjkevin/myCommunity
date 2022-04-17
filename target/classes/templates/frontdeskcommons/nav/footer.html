@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="myfooter">
+    <footer class="footer-area pt-100 pb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>About Us</h3>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique beatae laudantium alias aspernatur officiis,ab voluptatum asperiores repudiandae!Quia qui quasi quaerat quisquam delectus culpa rem dolores impedit.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>My Account</h3>
+                        <ul class="import-link">
+                            <li><a href="my-account.html">My Account</a></li>
+                            <li><a href="checkout.html">Order History</a></li>
+                            <li><a href="wishlist.html">Wishlist</a></li>
+                            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="faq.html">Faq</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>Categories</h3>
+                        <ul class="import-link">
+                            <li><a href="#">Decorative</a></li>
+                            <li><a href="#">Kitchen Ultrens</a></li>
+                            <li><a href="#">Chair & Bar Stools</a></li>
+                            <li><a href="#">Sofa & Armchair</a></li>
+                            <li><a href="#">Interior Lighting</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="single-footer-widget">
+                        <h3>Contact Us</h3>
+                        <ul class="address">
+                            <li><span>Phone</span><i class="bx bx-phone"></i><a href="tel:+1-(143)-258-1856">+1(143) 258-1856</a></li>
+                            <li><span>Email</span><i class="bx bx-envelope"></i><a><span class="__cf_email__" data-cfemail="8de4e3ebe2cde1e4f5eca3eee2e0">[email&#160;protected]</span></a></li>
+                            <li class="location"><Span>Address</Span><i class="bx bx-location-plus"></i>123,Western Road,Melbourne Australia </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-30">
+                <div class="col-lg-3">
+                    <div class="single-widget-bottom">
+                        <h3>Follow Us</h3>
+                        <ul class="social-icon">
+                            <li><a target="_blank"><i class="bx bxl-facebook"></i></a></li>
+                            <li><a target="_blank"><i class="bx bxl-instagram"></i></a></li>
+                            <li><a target="_blank"><i class="bx bxl-linkedin-square"></i></a></li>
+                            <li><a target="_blank"><i class="bx bxl-twitter"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="single-widget-bottom">
+                        <h3>Subscribe Newsletter</h3>
+                        <form class="newsletter-form" data-toggle="validator"><input type="email" class="form-control" placeholder="Enter email address" name="EMAIL" required autocomplete="off"><button class="default-btn" type="submit"><i class="bx bxs-send"></i>Subscribe </button>
+                            <div id="validator-newsletter" class="form-result"></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="single-widget-bottom">
+                        <h3>Payment Method</h3>
+                        <ul class="payment">
+                            <li><a href="#" target="_blank"><img th:src="@{/lixa/images/payment/card-1.jpg}" alt="Image"></a></li>
+                            <li><a href="#" target="_blank"><img th:src="@{/lixa/images/payment/card-2.jpg}" alt="Image"></a></li>
+                            <li><a href="#" target="_blank"><img th:src="@{/lixa/images/payment/card-3.jpg}" alt="Image"></a></li>
+                            <li><a href="#" target="_blank"><img th:src="@{/lixa/images/payment/card-4.jpg}" alt="Image"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="copy-right-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>Copyright <i class="bx bx-copyright"></i> &nbsp; 2021- &nbsp; &copy; &nbsp; &nbsp; 基层社区管理服务平台<a target="_blank"></a></p>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="terms-condition">
+                        <li><a href="">共建和谐家园  </a></li>
+                        <li><a href="">你我心连心</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

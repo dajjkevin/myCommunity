@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <META HTTP-EQUIV='pragma' CONTENT='no-cache'>
+    <META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'>
+    <META HTTP-EQUIV='expires' CONTENT='0'>
+
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <!-- 星级 -->
+<!--    <link type="text/css" rel="stylesheet" th:href="@{/raty/demo/css/application.css}">-->
+<!--    <script type="text/javascript" th:href="@{/raty/demo/js/jquery.min.js}"></script>-->
+<!--    <script type="text/javascript" th:href="@{/raty/lib/jquery.raty.min.js}"></script>-->
+
+    <title>社区活动</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<div>
+    <h2 style="text-align: center;margin-top: 3%;margin-bottom: 3%">服务详情</h2>
+</div>
+
+
+<!--优享服务-->
+<section class="shop-details-area ptb-100">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="shop-details-image"><img th:src="${serveDtl.serveImg}" width="400px" height="400px" alt="Image"></div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="shop-details-desc">
+                    <h3 th:text="${serveDtl.type.typeName}"></h3>
+                    <div class="shop-review">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div><a class="rating-count">(3 Customer reviews)</a>
+                    </div>
+                    <div class="price"><span class="new-price" th:text="'￥'+${serveDtl.serveMoney}"></span></div>
+                    <p><i class="bx bx-phone-call" th:text="'：'+${serveDtl.phone}"></i></p>
+                    <p><i class="bx bx-user" th:text="'：'+${serveDtl.serveName}"></i></p>
+                    <br><br>
+                    <button type="submit" class="default-btn">叫服务</button>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="tab shop-details-tab">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <ul class="tabs">
+                                <li>用户评价([[${allEvaluate.total}]])</li>
+                                <li>描述 </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="tab_content">
+                                <!--服务评价信息-->
+                                <div class="tabs_item">
+                                    <div class="shop-details-tab-content">
+                                        <div class="shop-review-form">
+                                            <!-- 所有用户评价信息 -->
+                                            <div class="review-comments" th:if="${not #lists.isEmpty(allEvaluate)}" th:each="allEvaluate:${allEvaluate.records}">
+                                                <div class="review-item">
+                                                    <div class="logo">
+                                                        <img th:src="${allEvaluate.user?.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${allEvaluate.user?.userAvatar}"  style="width: 50px;height: 50px">
+                                                    </div>
+                                                    <div class="rating" th:text="${allEvaluate.user?.userName}">用户名</div>
+                                                    <div class="rating"  style="margin-left: 70%" th:text="${#dates.format(allEvaluate.evaluate?.eTime,'yyyy-MM-dd HH:mm:ss')}">时间</div>
+                                                    <div class="form-group">
+                                                        <p th:id="${allEvaluate.evaluate?.eId} +''+ ${allEvaluate.evaluate?.fraction}" >用户满意度</p>
+                                                    </div>
+                                                    <h3>评价内容👇：</h3>
+                                                    <p th:utext="${allEvaluate.evaluate?.content}">Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--页码-->
+                                        <div class="col-12" th:if="${not #lists.isEmpty(allEvaluate.records)}" style="margin-top: 5%">
+                                            <div class="pagination-area text-center">
+                                                <a  class="next page-numbers"  th:onclick="|doQuery(1)|" style="cursor: pointer;">首页</a>
+                                                <a class="next page-numbers" th:if="${allEvaluate.hasPrevious()}" th:onclick="|doQuery(${allEvaluate.getCurrent()-1})|" style="cursor: pointer;"><i class="flaticon-left-arrow"></i></a>
+                                                <span class="" aria-current="page" th:class="${num == allEvaluate.current} ?'page-numbers current':'page-numbers'"
+                                                      th:each="num:${#numbers.sequence(1,allEvaluate.pages)}">
+                                                      <a th:onclick="|doQuery(${num})|" style="cursor: pointer;">[[${num}]]</a>
+                                                </span>
+                                                <a  class="next page-numbers" th:if="${allEvaluate.hasNext()}" th:onclick="|doQuery(${allEvaluate.current+1})|" style="cursor: pointer;"><i class="flaticon-right-arrow"></i></a>
+                                                <a  class="next page-numbers"  th:onclick="|doQuery(${allEvaluate.pages})|" style="cursor: pointer;">末页</a>
+                                                <p style="text-align: center;">
+                                                    当前第 [[${allEvaluate.current}]] 页,共 [[${allEvaluate.pages }]] 页,
+                                                    总 [[ ${allEvaluate.total }]] 条评论记录
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--服务介绍-->
+                                <div class="tabs_item">
+                                    <div class="shop-details-tab-content">
+                                        <h3 class="mb-2">介绍</h3>
+                                        <p th:utext="${serveDtl.serveInt}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--优享服务-->
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script type="text/javascript">
+
+    function doQuery(pageNum){
+        var serveId = [[${serveDtl.serveId}]]
+        window.location.href = "/user/serveDtl/"+ serveId + "?pageNum=" + pageNum;
+    }
+
+    function signUpAct(actId){ //报名活动
+        $.ajax({
+            type:'POST',
+            url:'/user/signUpAct',
+            data:{
+                actId:actId
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("报名成功",{icon:1});
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'友情提醒',
+                        btn: ['登陆去', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }else if(res.code === '-2'){
+                    layer.msg(res.msg,{icon:2});
+                }
+            }
+        })
+    }
+
+    function signUpActModel(){
+
+        const  actIdHide  = $('#actIdHide').val();//得到隐藏的活动id
+        signUpAct(actIdHide);
+    }
+    function actDtl(actId){
+
+        $.ajax({
+            type:'GET',
+            url: '/user/actById/'+actId,
+            success:function (res){
+                if(res.code ==='0'){
+                    $('#actImg').attr('src','');
+                    $('#actImg').attr('src',res.data.actImg);
+                    $('#actThemeI').html(res.data.actTheme);
+                    $("#showActDtl").modal('show');
+                    $('#actStart').html(res.data.actStart);
+                    $('#actEnd').html(res.data.actEnd);
+                    $('#actNum').html(res.data.actNum);
+                    $('#actDtl').html(res.data.actDtl);
+                    $('#actIdHide').val(res.data.actId);
+                }
+            }
+        })
+    }
+
+    function myHeart(actId,heartId){
+        $.ajax({
+            type:'POST',
+            url:'/user/actMyHeart',
+            data:{
+                actId:actId,
+                heartId:heartId,
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("收藏成功",{icon:1});
+                    window.location.reload();
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'友情提醒',
+                        btn: ['登陆去', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }else if(res.code === '-2'){
+                    layer.msg(res.msg,{icon:2});
+                }
+            }
+        })
+    }
+
+    function allFraction(startNum) {
+        var split = startNum.split("a");
+        var sE0 = split[0];
+        var sE1 = split[1];
+
+        layui.use('rate', function () {
+            var rate = layui.rate;
+            var inAll = rate.render({
+                elem: '#'+sE0+sE1       //绑定元素（＋a解决不能为全数字）
+                , length: 5            //星星个数
+                , value: sE1    //初始化值
+                , theme: ' gold'     //颜色
+                , text: true           //显示文本
+                , readonly: true      //只读
+                //自定义文本，点击后文本显示的内容
+                , setText: function (value) {
+                    var arrs = {
+                        '1':'很一般',
+                        '2':'一般',
+                        '3':'中等',
+                        '4':'好',
+                        '5':'非常好',
+                    }
+                    this.span.text("满意度："+arrs[value] || (value + "星"));
+                }
+            })
+        });
+    };
+
+    window.onload=function (){
+        $.ajax({
+            url:'/user/userListEval',
+            success:function (res){
+                var total = res.data.length;
+                for (var i=0;i<total;i++){
+                    allFraction(res.data[i].eid+"a"+res.data[i].fraction);
+                }
+            }
+        });
+    }
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+</body>
+
+</html>

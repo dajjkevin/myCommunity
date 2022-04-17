@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <META HTTP-EQUIV='pragma' CONTENT='no-cache'>
+    <META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'>
+    <META HTTP-EQUIV='expires' CONTENT='0'>
+
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <!-- 星级 -->
+    <!--    <link type="text/css" rel="stylesheet" th:href="@{/raty/demo/css/application.css}">-->
+    <!--    <script type="text/javascript" th:href="@{/raty/demo/js/jquery.min.js}"></script>-->
+    <!--    <script type="text/javascript" th:href="@{/raty/lib/jquery.raty.min.js}"></script>-->
+
+    <title>社区活动</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<div>
+    <!--    <h2 style="text-align: center;margin-top: 3%;margin-bottom: 3%">服务详情</h2>-->
+</div>
+
+
+<!--优享服务-->
+<section class="shop-details-area ptb-100">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="shop-details-image"><img th:src="${evalByOrderId.serve.serveImg}" width="400px" height="400px" alt="Image"></div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="shop-details-desc">
+                    <h3 th:text="${evalByOrderId.type.typeName}"></h3>
+                    <div class="shop-review">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div><a class="rating-count">(3 Customer reviews)</a>
+                    </div>
+                    <div class="price"><span class="new-price" th:text="'￥'+${evalByOrderId.serve.serveMoney}"></span></div>
+                    <p><i class="bx bx-phone-call" th:text="'：'+${evalByOrderId.serve.phone}"></i></p>
+                    <p><i class="bx bx-user" th:text="'：'+${evalByOrderId.serve.serveName}"></i></p>
+                    <!--                    <br><br>-->
+                    <!--                    <button type="submit" class="default-btn">叫服务</button>-->
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="tab shop-details-tab">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <ul class="tabs">
+                                <li id="evalInfo" th:onclick="fontChangeColor('userpj')">其他评价([[${allEvaluate.total}]])</li>
+                                <li th:if="${evalByOrderId.evaluate?.eStatus} != '0'" th:onclick="fontChangeColor('pj')" id="pj">评价</li>
+                                <li th:if="${evalByOrderId.evaluate?.eStatus} == '0'" th:onclick="fontChangeColor('mypj')"v id="mypj">我的评论</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="tab_content">
+                                <!--所有用户评价-->
+                                <div class="tabs_item">
+                                    <div class="shop-details-tab-content">
+                                        <div class="shop-review-form">
+                                            <div class="review-comments" th:if="${not #lists.isEmpty(allEvaluate)}" th:each="allEvaluate:${allEvaluate.records}">
+                                                <div class="review-item">
+                                                    <div class="logo">
+                                                        <img th:src="${allEvaluate.user?.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${allEvaluate.user?.userAvatar}"  style="width: 50px;height: 50px">
+                                                    </div>
+                                                    <div class="rating" th:text="${allEvaluate.user?.userName}">用户名</div>
+                                                    <div class="rating"  style="margin-left: 70%" th:text="${#dates.format(allEvaluate.evaluate?.eTime,'yyyy-MM-dd HH:mm:ss')}">时间</div>
+                                                    <div class="form-group">
+                                                        <p th:id="${allEvaluate.evaluate?.eId} +''+ ${allEvaluate.evaluate?.fraction}">用户满意度</p>
+                                                    </div>
+                                                    <h3>评价内容👇：</h3>
+                                                    <p th:utext="${allEvaluate.evaluate?.content}">Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 评论页码 -->
+                                        <div class="col-12" th:if="${not #lists.isEmpty(allEvaluate.records)}" style="margin-top: 5%">
+                                            <div class="pagination-area text-center">
+                                                <a  class="next page-numbers"  th:onclick="|doQuery(1)|" style="cursor: pointer;">首页</a>
+                                                <a class="next page-numbers" th:if="${allEvaluate.hasPrevious()}" th:onclick="|doQuery(${allEvaluate.getCurrent()-1})|"><i class="flaticon-left-arrow"></i></a>
+                                                <span class="" aria-current="page" th:class="${num == allEvaluate.current} ?'page-numbers current':'page-numbers'"
+                                                      th:each="num:${#numbers.sequence(1,allEvaluate.pages)}">
+                                                      <a th:onclick="|doQuery(${num})|" style="cursor: pointer;">[[${num}]]</a>
+                                                </span>
+                                                <a  class="next page-numbers" th:if="${allEvaluate.hasNext()}" th:onclick="|doQuery(${allEvaluate.current+1})|"><i class="flaticon-right-arrow"></i></a>
+                                                <a  class="next page-numbers"  th:onclick="|doQuery(${allEvaluate.pages})|" style="cursor: pointer;">末页</a>
+                                                <p style="text-align: center;">
+                                                    当前第 [[${allEvaluate.current}]] 页,共 [[${allEvaluate.pages }]] 页,
+                                                    总 [[ ${allEvaluate.total }]] 条评论记录
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tabs_item">
+                                    <div class="shop-details-tab-content">
+                                        <div class="shop-review-form">
+                                            <div class="review-form">
+                                                <!--服务评价-->
+                                                <form>
+                                                    <div class="row" th:if="${evalByOrderId.evaluate?.eStatus} != '0'">
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <div class="form-group">
+                                                                <label>满意度</label>
+                                                                <div>
+                                                                    <p id="startE"></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>评价内容</label>
+                                                                <div id="evalEditor" style="height:400px;max-height:325px;">
+                                                                    <p id="evalContent">评论本次服务与建议,让我们以可做的更好！</p>
+                                                                </div>
+                                                                <!--<textarea name="review-body" id="review-body" cols="30" rows="8" class="form-control"></textarea>-->
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <button type="button" class="btn default-btn two" th:onclick="addAval([[${evalByOrderId.orderId}]])" id="addAvalId">提交</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- 我的评价-->
+                                                <div class="row" th:if="${evalByOrderId.evaluate?.eStatus} == '0'">
+                                                    <h3 style="text-align: center;color: #b3eef8" >该服务已评价</h3>
+                                                    <div class="review-item">
+                                                        <div class="logo">
+                                                            <img th:src="${session.userFrontDesk?.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${session.userFrontDesk?.userAvatar}"  style="width: 50px;height: 50px">
+                                                        </div>
+                                                        <h3 class="rating" th:text="${session.userFrontDesk?.userName}">用户名</h3>
+                                                        <div class="form-group">
+                                                            <label>满意度</label>
+                                                            <div>
+                                                                <p id="fraction"></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="rating" id="eTime" style="margin-left: 70%">时间</div>
+                                                        <h3>评价内容👇：</h3>
+                                                        <p id="myContent">Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--优享服务-->
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script type="text/javascript">
+
+    function doQuery(pageNum) {
+
+        var orderId = [[${evalByOrderId.orderId}]]
+        window.location.href = "/user/evaluateIndex/"+ orderId + "?pageNum=" + pageNum;
+    }
+
+    function fontChangeColor(fontFlag){
+        $('#mypj,#pj,#evalInfo').css("color","");
+        if (fontFlag == 'pj'){
+            $('#pj').css("color","#c4ab90");
+            $('#pj').css("font-weight","Bold");
+        }
+        if (fontFlag == 'mypj'){
+            $('#mypj').css("color","#c4ab90");
+            $('#mypj').css("font-weight","Bold");
+        }
+        if (fontFlag == 'userpj'){
+            $('#evalInfo').css("color","#c4ab90");
+            $('#evalInfo').css("font-weight","Bold");
+        }
+
+    }
+
+    var pf = "";//评分星级
+    layui.use('rate', function () {
+        var rate = layui.rate;
+        pf = rate.render({
+            elem:'#startE',
+            length: 5            //星星个数
+            , value: 4    //初始化值
+            , theme: ' gold'     //颜色
+            // , half: true           //支持半颗星
+            , text: true           //显示文本
+            , setText: function (value) {
+                var arrs = {
+                    '1':'很一般',
+                    '2':'一般',
+                    '3':'中等',
+                    '4':'好',
+                    '5':'非常好',
+                }
+                this.span.text(arrs[value] || (value + "星"));
+            }
+        })
+    });
+
+    function addAval(orderId) {
+
+        var xjData = pf.config.value;//星级
+        var userId = '[[${session.userFrontDesk?.userId}]]';
+        var evalContent = editor.txt.html();//评价内容
+        var serveId = '[[${evalByOrderId.serve?.serveId}]]';
+
+        $.ajax({
+            type: "POST",
+            url: '/user/userAddEvaluate',
+            data: {
+                orderId: orderId,
+                userId: userId,
+                serveId: serveId,
+                content: evalContent,
+                fraction: xjData,
+            },
+            success: function (res) {
+                if (res.code == '0') {
+                    layer.msg("评价成功！", {icon: 1});
+                    window.location.reload();
+                }
+            }
+        })
+    }
+
+    //格式化时间戳
+    function add0(m){return m<10?'0'+m:m }
+    function format(shijianchuo)
+    {
+        var time = new Date(shijianchuo);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);
+    }
+
+    function allFraction(startNum) {
+
+        var split = startNum.split("a");
+        var sE0 = split[0];
+        var sE1 = split[1];
+
+        layui.use('rate', function () {
+            var rate = layui.rate;
+            var inAll = rate.render({
+                elem: '#'+sE0+sE1         //绑定元素（＋a解决不能为全数字）
+                , length: 5            //星星个数
+                , value: sE1    //初始化值
+                , theme: ' gold'     //颜色
+                , text: true           //显示文本
+                , readonly: true      //只读
+                //自定义文本，点击后文本显示的内容
+                , setText: function (value) {
+                    var arrs = {
+                        '1':'很一般',
+                        '2':'一般',
+                        '3':'中等',
+                        '4':'好',
+                        '5':'非常好',
+                    }
+                    this.span.text("满意度："+arrs[value] || (value + "星"));
+                }
+            })
+        });
+    };
+
+    window.onload = function () {
+        // $('#pj').click();//加载页面后点击评价
+        // $('#mypj').click();//加载页面后点击我的评价  其中一个
+
+        var eId = '[[${evalByOrderId.evaluate?.eId}]]';
+        if (eId != "" && eId != null && eId != undefined) {
+            $.ajax({
+                type: "GET",
+                url: "/user/userEvalById",
+                data: {
+                    eId: eId
+                },
+                success: function (res) {
+                    $('#eTime').html(format(res.data.etime));
+                    $('#myContent').html(res.data.content);
+                    var fractionE = res.data.fraction;
+
+                    layui.use('rate', function () {
+                        var rate = layui.rate;
+                        var ins1 = rate.render({
+                            elem: '#fraction'       //绑定元素（＋a解决不能为全数字）
+                            , length: 5            //星星个数
+                            , value: fractionE    //初始化值
+                            , theme: ' gold'     //颜色
+                            , text: true           //显示文本
+                            , readonly: true      //只读
+                            //自定义文本，点击后文本显示的内容
+                            , setText: function (value) {
+                                var arrs = {
+                                    '1':'很一般',
+                                    '2':'一般',
+                                    '3':'中等',
+                                    '4':'好',
+                                    '5':'非常好',
+                                }
+                                this.span.text(arrs[value] || (value + "星"));
+                            }
+                        })
+                    });
+                }
+            });
+        }
+
+        $.ajax({
+            url:'/user/userListEval',
+            success:function (res){
+                var total = res.data.length;
+                for (var i=0;i<total;i++){
+                    allFraction(res.data[i].eid+"a"+res.data[i].fraction);
+                }
+            }
+        });
+
+    }
+
+
+    var E = window.wangEditor
+    var editor = new E('#evalEditor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    // 配置服务器端地址
+    editor.customConfig.uploadImgServer = 'http://localhost:8080/upload/editor'
+    //配置指定文件名
+    editor.customConfig.uploadFileName = 'file'
+
+    //如果图片不大，可以用base64存储
+    // editor.customConfig.uploadImgShowBase64 = true
+
+    editor.create()
+
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>新增基层人员</title>
+
+  <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+  <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+  <script th:src="@{/xtheme/js/respond.min.js}"></script>
+  <![endif]-->
+</head>
+
+<body class="sticky-header">
+
+<section>
+  <!-- left side start 导航栏-->
+  <div  th:insert="~{backcommons/nav/sidenav :: myside}"></div>
+  <!-- left side end-->
+
+  <!-- main content start-->
+  <div class="main-content" >
+
+    <!-- header section start-->
+    <div class="header-section">
+
+      <!--toggle button start 导航栏缩放-->
+      <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+      <!--toggle button end-->
+
+      <!--notification menu start 头菜单-->
+      <div  th:insert="~{backcommons/nav/head :: myhead}"></div>
+      <!--notification menu end -->
+
+    </div>
+    <!-- header section end-->
+
+    <!-- page heading start-->
+    <div class="page-heading">
+      <h3>
+        管理员管理
+      </h3>
+      <ul class="breadcrumb">
+        <li>
+          <a href="#">管理员管理</a>
+        </li>
+        <li class="active" id="addHouId"> 基层人员新增 </li>
+      </ul>
+    </div>
+    <!-- page heading end-->
+
+    <div class="wrapper">
+      <div class="row">
+        <div class="col-sm-12">
+          <section class="panel">
+            <header class="panel-heading">
+              新增户主
+              <span class="tools pull-right">
+                                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            </span>
+            </header>
+            <div class="panel-body">
+              <form role="form" th:action='@{/uploadImg/img}' method="post" th:onsubmit="return check()" enctype="multipart/form-data">
+                <input type="file" name="img" />
+                <button type="submit" class="btn btn-primary" style="margin-top: 15px">Submit</button>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+
+    </div>
+
+    <!--body wrapper end-->
+
+    <!--footer section start 页脚-->
+    <footer>
+      <div th:insert="~{backcommons/nav/footer :: myfooter}"></div>
+    </footer>
+    <!--footer section end-->
+
+  </div>
+  <!-- main content end-->
+</section>
+
+<script>
+
+  function check(){
+    const pro = $("#province").val();
+    const city = $("#city").val();
+    const area = $("#area").val();
+    const addr = $("#addr").val();
+    if (pro === '' || city === '' || area === ''){
+      alert("地址请正确选择！")
+      return false;
+    }else if (addr === ''){
+      alert("详细地址不能为空");
+      $("#addr").select();
+      return false;
+    }
+  }
+
+  window.onload = function (){
+
+    const subMenu = document.getElementById("addHouId").className;
+    if (subMenu === "active"){
+      $("#addHouse").addClass("active");
+    }
+
+    $("#birthday").val("2021-01-06")
+    //得到当前时间
+    const date_now = new Date();
+    //得到当前年份
+    const year = date_now.getFullYear();
+    //得到当前月份
+    //注：
+    //  1：js中获取Date中的month时，会比当前月份少一个月，所以这里需要先加一
+    //  2: 判断当前月份是否小于10，如果小于，那么就在月份的前面加一个 '0' ， 如果大于，就显示当前月份
+    const month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
+    //得到当前日子（多少号）
+    const date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
+    //设置input标签的max属性
+    $("#birthday").attr("max",year+"-"+month+"-"+date);
+
+  }
+
+  function gettext(){
+    var re = $("#national").find("option:selected").text();
+    alert(re);
+  }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+</body>
+</html>

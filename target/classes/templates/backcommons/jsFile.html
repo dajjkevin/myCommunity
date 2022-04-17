@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<!-- th:fragment 定义需要引入的代码块，该div包含的内容即为引用的公共内容 -->
+<div th:fragment="myjs">
+    <div class="jsfile">
+
+        <!-- Placed js at the end of the document so the pages load faster JS放在文档的末尾，页面加载更快-->
+        <script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+        <script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+        <script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+        <script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+        <script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+        <script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+        <!--easy pie chart-->
+        <script th:src="@{/xtheme/js/easypiechart/jquery.easypiechart.js}"></script>
+        <script th:src="@{/xtheme/js/easypiechart/easypiechart-init.js}"></script>
+
+        <!--Sparkline Chart-->
+        <script th:src="@{/xtheme/js/sparkline/jquery.sparkline.js}"></script>
+        <script th:src="@{/xtheme/js/sparkline/sparkline-init.js}"></script>
+
+        <!--icheck -->
+        <script th:src="@{/xtheme/js/iCheck/jquery.icheck.js}"></script>
+        <script th:src="@{/xtheme/js/icheck-init.js}"></script>
+
+        <!-- jQuery Flot Chart-->
+        <script th:src="@{/xtheme/js/flot-chart/jquery.flot.js}"></script>
+        <script th:src="@{/xtheme/js/flot-chart/jquery.flot.tooltip.js}"></script>
+        <script th:src="@{/xtheme/js/flot-chart/jquery.flot.resize.js}"></script>
+
+
+        <!--Morris Chart-->
+        <script th:src="@{/xtheme/js/morris-chart/morris.js}"></script>
+        <script th:src="@{/xtheme/js/morris-chart/raphael-min.js}"></script>
+
+        <!--Calendar-->
+        <script th:src="@{/xtheme/js/calendar/clndr.js}"></script>
+        <script th:src="@{/xtheme/js/calendar/evnt.calendar.init.js}"></script>
+        <script th:src="@{/xtheme/js/calendar/moment-2.2.1.js}"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+
+        <!--common scripts for all pages-->
+        <script th:src="@{/xtheme/js/scripts.js}"></script>
+
+        <!--Dashboard Charts-->
+        <script th:src="@{/xtheme/js/dashboard-chart-init.js}"></script>
+    </div>
+</div>
+</html>

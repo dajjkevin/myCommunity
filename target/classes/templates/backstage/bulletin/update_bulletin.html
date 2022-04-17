@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <title>公告修改</title>
+
+    <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+    <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+
+    <!--pickers css-->
+    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-datepicker/css/datepicker-custom.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-timepicker/css/timepicker.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-colorpicker/css/colorpicker.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-daterangepicker/daterangepicker-bs3.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/xtheme/js/bootstrap-datetimepicker/css/datetimepicker-custom.css}" />
+
+    <!--wangEditor start-->
+
+    <!-- jQuery -->
+    <!--    <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>-->
+    <!-- Bootstrap -->
+    <!--    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>-->
+
+    <!-- FastClick -->
+    <script src="https://cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
+<!--    <script src="https://cdn.staticfile.org/jQuery-slimScroll/1.3.8/jquery.slimscroll.min.js"></script>-->
+<!--    <script src="https://cdn.staticfile.org/layer/2.3/layer.js"></script>-->
+    <script src="https://cdn.staticfile.org/codemirror/5.38.0/codemirror.min.js"></script>
+    <script src="https://cdn.staticfile.org/codemirror/5.38.0/addon/display/placeholder.min.js"></script>
+    <script src="https://cdn.staticfile.org/codemirror/5.38.0/mode/clike/clike.min.js"></script>
+    <script src="https://cdn.staticfile.org/codemirror/5.38.0/mode/sql/sql.min.js"></script>
+    <script src="https://cdn.staticfile.org/codemirror/5.38.0/mode/xml/xml.min.js"></script>
+    <!--富文本编辑器wangEditor-->
+    <script src="https://cdn.staticfile.org/wangEditor/10.0.13/wangEditor.min.js"></script>
+    <!-- wangEditor start   -->
+
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start 导航栏-->
+    <div  th:insert="~{backcommons/nav/sidenav :: myside}"></div>
+    <!-- left side end-->
+
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div class="header-section">
+
+            <!--toggle button start 导航栏缩放-->
+            <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+            <!--toggle button end-->
+
+            <!--notification menu start 头菜单-->
+            <div  th:insert="~{backcommons/nav/head :: myhead}"></div>
+            <!--notification menu end -->
+
+        </div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <ul class="breadcrumb">
+                <li>社区公告</li>
+                <li class="active" id="addGR"> 发布公告 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <span class="tools pull-right">
+                                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body">
+                            <form role="form"  th:onsubmit="return check()" id="serveForm" enctype="multipart/form-data">
+                                <input type="hidden" name="bulletinId" th:value="${bulById.bulletinId}">
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>&nbsp;公告主题&nbsp;</label>
+                                    <input type="text" name="bulletinTheme" style="width: 14%" th:value="${bulById.bulletinTheme}" placeholder="请输入公告主题..." class="form-control">
+                                </div>
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>&nbsp;公告内容&nbsp;</label>
+                                    <div id="editor"  style="height:400px;max-height:500px;">
+                                        <p th:utext="${bulById.content}"></p>
+                                    </div>
+                                </div>
+                                <button type="button" th:onclick="savaServe()" class="btn btn-primary" style="margin-left: 50%">提交</button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!--body wrapper end-->
+
+        <!--footer section start 页脚-->
+        <footer>
+            <div th:insert="~{backcommons/nav/footer :: myfooter}" ></div>
+        </footer>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script type="text/javascript">
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    // 配置服务器端地址
+    editor.customConfig.uploadImgServer = 'http://localhost:8080/upload/editor'
+    //配置指定文件名
+    editor.customConfig.uploadFileName = 'file'
+
+    //如果图片不大，可以用base64存储
+    // editor.customConfig.uploadImgShowBase64 = true
+
+    editor.create()
+</script>
+
+<script>
+
+    function savaServe(){
+
+        const  bulletinTheme = $("[name='bulletinTheme']").val();
+        if (bulletinTheme === null || bulletinTheme === ""){
+            $("[name='bulletinTheme']").select();
+            layer.msg("主题不能为空",{icon:0});
+            return false;
+        }
+
+        var content = editor.txt.html();
+        var serveForm = $("#serveForm").serialize();
+
+        var formData = new FormData();//创建一个表单对象进行添加内容信息
+        formData.append("contents",content);
+
+        $.ajax({
+            type: "POST",
+            url:'/gcsm/updateBul?'+serveForm,
+            data:formData,
+            cache: false, //上传文件不需要缓存
+            processData: false, // 告诉jQuery不要去处理发送的数据
+            contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+            success: function(res) {
+                if (res.code == '0' ){
+                    window.location.href='/gcsm/loadBulletin';
+                } else if(res.code=="-1"){
+                    layer.msg(res.msg,{icon:2});
+                }
+            }
+        })
+    }
+
+    window.onload = function (){
+
+        const subMenu = document.getElementById("addGR").className;
+        if (subMenu === "active"){
+            $("#addGrassRoots").addClass("active");
+        }
+
+    }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+<!--上传图片回显-->
+<!--<script th:src="@{/xtheme/backstageJS/appImg.js}"></script>-->
+
+<!--jquery时间-->
+<script th:src="@{/vendor/js/build/jquery.datetimepicker.full.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <title>新增用户</title>
+
+    <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+    <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start 导航栏-->
+    <div  th:insert="~{backcommons/nav/sidenav :: myside}"></div>
+    <!-- left side end-->
+
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div class="header-section">
+
+            <!--toggle button start 导航栏缩放-->
+            <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+            <!--toggle button end-->
+
+            <!--notification menu start 头菜单-->
+            <div  th:insert="~{backcommons/nav/head :: myhead}"></div>
+            <!--notification menu end -->
+
+        </div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="">社区用户</a>
+                </li>
+                <li class="active" id="addGR"> 新增用户 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <span class="tools pull-right">
+                                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            </span>
+                        </header>
+                        <div class="panel-body">
+                            <form role="form" id="userForm" th:onsubmit="return check()" enctype="multipart/form-data">
+                                <div class="form-inline" >
+                                    <label>用户名&nbsp;</label>
+                                    <input type="text" name="userName" id="userName" style="width: 14%" placeholder="请输入用户名..." class="form-control">
+                                    <label>&nbsp;性别&nbsp;</label>
+                                    <select name="gender" class="form-control">
+                                        <option value="0" selected>男</option>
+                                        <option value="1">女</option>
+                                    </select>
+                                </div>
+                                <div data-toggle="distpicker" class="form-inline" style="margin-top: 15px" >
+                                    <label> 家庭地址</label>
+                                    <select data-province="福建省" name="province" id="province" class="form-control" style="width: 8%"></select>
+                                    <select data-city="福州市" name="city" id="city" class="form-control" style="width: 8%"></select>
+                                    <select data-district="闽侯县" name="area" id="area" class="form-control" style="width: 8%"></select>
+                                    <input type="text" placeholder="具体地址" name="addr" id="addr" class="form-control" >
+                                </div>
+
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>电&nbsp;话&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                    <input type="text" name="phone" class="form-control">
+                                </div>
+                                <div class="form-inline" style="margin-top: 15px">
+                                    <label>头&nbsp;像&nbsp;</label> <br />
+                                    <img id="picImg"  width="150" height="160" class="py-1" style="margin-left: 5%" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c"><br/><br>
+                                    <input type="file" name="userImg" id="userImg"  onchange="previewImage(this);" style="margin-left: 5%">
+                                </div>
+                                <button type="button" th:onclick="savaUser()" class="btn btn-primary" style="margin-top: 15px;margin-left: 40%">提交</button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+
+        <!--body wrapper end-->
+
+        <!--footer section start 页脚-->
+        <footer>
+            <div th:insert="~{backcommons/nav/footer :: myfooter}"></div>
+        </footer>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+<script>
+
+    function savaUser(){
+
+        const userName = $("#userName").val();
+        const pro = $("#province").val();
+        const city = $("#city").val();
+        const area = $("#area").val();
+        const addr = $("#addr").val();
+        if(userName == ''){
+            layer.msg("用户名不能为空",{icon:2});
+            $("#userName").select();
+            return  false;
+        }
+        if (pro === '' || city === '' || area === ''){
+            layer.msg("地址请正确选择",{icon:2});
+            return false;
+        }else if (addr === ''){
+            layer.msg("详细地址不能为空",{icon:2});
+            $("#addr").select();
+            return false;
+        }
+
+        var userInfo = $("#userForm").serialize();
+
+        var formData = new FormData();
+        formData.append("userImg", $("#userImg")[0].files[0]);
+
+        $.ajax({
+            type: "POST",
+            url:'/user/savaUser?'+userInfo,
+            async:false,
+            data: formData,
+            processData: false, // 告诉jQuery不要去处理发送的数据
+            contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+            success: function(res) {
+                if (res.code == '0' ) {
+                    // layer.msg("",{icon:1});
+                        window.location.href='/user/loadUsers';
+                    // layer.confirm("恭喜，注册成功！",{
+                    //     btn: ['确定', '取消']
+                    // }, function () {
+                    //     // 按钮1的事件
+                    // }, function(){
+                    //     // 按钮2的事件
+                    //     layer.close();//关闭窗口
+                    // });
+                } else if(res.code=="-1"){
+                    layer.msg(res.msg,{icon:2});
+                }
+            }
+        })
+    }
+
+    function check(){
+        const userName = $("#userName").val();
+        const pro = $("#province").val();
+        const city = $("#city").val();
+        const area = $("#area").val();
+        const addr = $("#addr").val();
+        if(userName == ''){
+            layer.msg("用户名不能为空",{icon:2});
+            $("#userName").select();
+        }
+        if (pro === '' || city === '' || area === ''){
+            alert("地址请正确选择！")
+            return false;
+        }else if (addr === ''){
+            alert("详细地址不能为空");
+            $("#addr").select();
+            return false;
+        }
+    }
+
+    window.onload = function (){
+
+        const subMenu = document.getElementById("addGR").className;
+        if (subMenu === "active"){
+            $("#addGrassRoots").addClass("active");
+        }
+
+        $("#birthday").val("2021-01-06")
+        //得到当前时间
+        const date_now = new Date();
+        //得到当前年份
+        const year = date_now.getFullYear();
+        //得到当前月份
+        //注：
+        //  1：js中获取Date中的month时，会比当前月份少一个月，所以这里需要先加一
+        //  2: 判断当前月份是否小于10，如果小于，那么就在月份的前面加一个 '0' ， 如果大于，就显示当前月份
+        const month = date_now.getMonth()+1 < 10 ? "0"+(date_now.getMonth()+1) : (date_now.getMonth()+1);
+        //得到当前日子（多少号）
+        const date = date_now.getDate() < 10 ? "0"+date_now.getDate() : date_now.getDate();
+        //设置input标签的max属性
+        $("#birthday").attr("max",year+"-"+month+"-"+date);
+
+    }
+
+    function gettext(){
+        var re = $("#national").find("option:selected").text();
+        alert(re);
+    }
+
+
+    function previewImage(file){
+
+        var img = document.getElementById('picImg');
+
+        if (file.files && file.files[0])
+        {
+
+            //准备一个文件读取器对象，并告诉它文件读取完毕之后要做什么。
+            var reader = new FileReader();
+            //成功读取了图片信息后，把读取结果赋予
+
+            //FileReader.readAsDataURL()
+            //开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容。
+            reader.onload = function(evt){
+                img.src= evt.target.result;
+                console.log("read ok! img src get value!"+evt.target.result);
+            }
+
+            console.log("start to read!")
+            reader.readAsDataURL(file.files[0]);
+
+        }
+        else{
+            // img.src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0165cb5d14565ca8012155290a6d86.png%402o.png&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648213883&t=ae062e4657838e19ca98f0d8999e7456";
+            // alert("no upload file!");
+        }
+
+    }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+<!--上传图片回显-->
+<!--<script th:src="@{/xtheme/backstageJS/appImg.js}"></script>-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.StudentMapper">
+
+    <insert id="addStu1" parameterType="Student">
+        insert into tbl_student
+        values(#{stuId},#{stuName},#{stuHeight})
+    </insert>
+
+
+</mapper>

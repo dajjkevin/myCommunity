@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>服务订单</title>
+
+  <!--dynamic table-->
+  <link th:href="@{/xtheme/js/advanced-datatable/css/demo_page.css}" rel="stylesheet" />
+  <link th:href="@{/xtheme/js/advanced-datatable/css/demo_table.css}" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/xtheme/js/data-tables/DT_bootstrap.css}" />
+
+  <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+  <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+</head>
+
+<body class="sticky-header">
+
+<section>
+
+    <!-- left side start 导航栏-->
+    <div  th:insert="~{backcommons/nav/sidenav :: myside}"></div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content">
+
+        <!-- header section start-->
+        <div class="header-section">
+
+        <!--toggle button start 导航栏缩放-->
+        <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+        <!--toggle button end-->
+
+        <!--notification menu start 头菜单-->
+        <div  th:insert="~{backcommons/nav/head :: myhead}"></div>
+        <!--notification menu end -->
+
+        </div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading" style="margin-top: 20px">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">服务订单</a>
+                </li>
+                <li class="" id=""> 订单列表 </li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start 页面内容-->
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                <section class="panel">
+                <header class="panel-heading">
+                    <span class="tools pull-right">
+                        <a href="javascript:;" class="fa fa-chevron-down"></a>
+                     </span>
+                </header>
+                <div class="panel-body">
+
+                <!-- 搜索 -->
+                <form th:action="@{/gcsm/serveOrders}" method="get">
+                    <!-- 设置一个分页默认页号为 1-->
+                    <input type="hidden" name="pageNum" value="1">
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control" placeholder="下单用户"  name="userName"  th:value="${param.serveName}" />
+                        </div>
+                        <div class="form-group  col-md-2">
+                            <input type="text" class="form-control" placeholder="用户电话"  name="userPhone"  th:value="${param.phone}" />
+                        </div>
+                        <div class="form-group col-md-2" style="">
+                            <select name="payStatus" class="form-control" th:value="${payStatus}">
+                                <option value="" th:selected="${payStatus==''}"> --支付状态-- </option>
+                                <option value="0" th:selected="${payStatus=='0'}">未支付</option>
+                                <option value="1" th:selected="${payStatus=='1'}">已支付</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2" >
+                            <input type="date"  autocomplete="off" placeholder="时间.." name="startDate" class="form-control" th:value="${param.startDate}"/>
+                        </div>
+                        <div class="form-group  col-md-2">
+                            <input type="text" class="form-control" placeholder="订单名称..."  name="orderName"  th:value="${param.serveName}" />
+                        </div>
+                        <div class="form-group col-md-2" >
+                            <button class="btn btn-primary ml-2" > 查 询 <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+
+                    <div class="adv-table">
+                        <table class="display table table-bordered" th:if="${not #lists.isEmpty(serveOrdersPage)}">
+                        <thead>
+                            <tr>
+                                <th class="row">编号</th>
+                                <th>订单号</th>
+                                <th>订单名称</th>
+                                <th>下单用户</th>
+                                <th>用户电话</th>
+                                <th>用户地址</th>
+                                <th>价格￥</th>
+                                <th>下单时间</th>
+                                <th>支付状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX" th:each="orders:${serveOrdersPage.records}">
+                                <td th:text="${orders.orderId}"></td>
+                                <td th:text="${orders.orderNo}"></td>
+                                <td th:text="${orders.orderName}"></td>
+                                <td th:text="${orders.orderUserName}"></td>
+                                <td th:text="${orders.orderPhone}"></td>
+                                <td th:text="${orders.orderAddr[0]}+${orders.orderAddr[1]}+${orders.orderAddr[2]}+${orders.orderAddr[3]}"></td>
+                                <td th:text="${orders.money}"></td>
+                                <td th:text="${#dates.format(orders.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm" type="button" th:if="${orders.payStatus} == '0'">未支付</button>
+                                    <button class="btn btn-success btn-sm" type="button" th:if="${orders.payStatus} == '1'">已支付</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <!-- 未查询到内容提示 -->
+                        <div class="alert" th:if="${#lists.isEmpty(serveOrdersPage.records)}" style="text-align: center">暂无查找到用户服务订单信息</div>
+                    </div>
+
+                    <!-- 分页操作 -->
+                    <div class="col-md-12 text-center clearfix" th:if="${not #lists.isEmpty(serveOrdersPage.records)}">
+                            <p style="text-align: center;">
+                                当前第 [[${serveOrdersPage.current}]] 页,共 [[${serveOrdersPage.pages }]] 页,
+                                总 [[ ${serveOrdersPage.total }]] 条记录
+                            </p>
+                        <ul class="pagination">
+                            <!--首页 gt >的意思 -->
+                            <li th:if="${serveOrdersPage.current gt 1}">
+                                <a th:onclick="|doQuery(1)|">首页</a>
+                            </li>
+                            <!-- 上一页 -->
+                            <li th:if="${serveOrdersPage.hasPrevious()}">
+                                <!-- <a th:href="'/gcsm/household?pageNum=' + ${pageHouse.getCurrent()-1}" th:text="上一页"></a>-->
+                                <a  th:onclick="|doQuery(${serveOrdersPage.getCurrent()-1})|" th:text="上一页"></a>
+                            </li>
+                            <!-- 中间页 -->
+                            <li th:class="${num == serveOrdersPage.current} ?'active':''"
+                                th:each="num:${#numbers.sequence(1,serveOrdersPage.pages)}">
+                                <a th:onclick="|doQuery(${num})|">[[${num}]]</a>
+                            </li>
+                            <!-- 下一页 -->
+                            <li th:if="${serveOrdersPage.hasNext()}">
+                                <!-- <a th:href="'/gcsm/household?pageNum=' + ${pageHouse.current+1}" th:text="下一页"></a>-->
+                                <a th:onclick="|doQuery(${serveOrdersPage.current+1})|" th:text="下一页"></a>
+                            </li>
+                            <!-- 尾页 lt < 的意思 -->
+                            <li th:if="${serveOrdersPage.current lt serveOrdersPage.getPages()}">
+                                <!-- <a th:href="'/gcsm/household?pageNum=' + ${pageHouse.pages}">尾页</a>-->
+                                <a th:onclick="|doQuery(${serveOrdersPage.pages})|">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                </section>
+                </div>
+            </div>
+
+
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <footer>
+            <div th:insert="~{backcommons/nav/footer :: myfooter}"></div>
+        </footer>
+        <!--footer section end-->
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<script>
+
+    function doQuery(pageNum){
+
+        //form表单中含有页数，默认第1页
+        document.forms[0].pageNum.value = pageNum;
+        document.forms[0].submit();
+    }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--dynamic table-->
+<script type="text/javascript" language="javascript" th:src="@{/xtheme/js/advanced-datatable/js/jquery.dataTables.js}"></script>
+<script type="text/javascript" th:src="@{/xtheme/js/data-tables/DT_bootstrap.js}"></script>
+<!--dynamic table initialization -->
+<script th:src="@{/xtheme/js/dynamic_table_init.js}"></script>
+
+<!--common scripts for all pages-->
+<script th:src="@{/xtheme/js/scripts.js}"></script>
+
+<!--地址联动-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+</body>
+</html>
+
+

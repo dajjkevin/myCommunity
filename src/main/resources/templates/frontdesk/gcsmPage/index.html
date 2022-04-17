@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <title>基层社区首页</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<!--1内容上部分-->
+<section class="hero-slider-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="faq-accordion mb-need">
+                    <li><p style="text-align: center;background-color:#f8f7f2;">家园公告</p></li>
+                    <ul class="accordion" th:each="bul:${bulletin.records}" th:if="${not #lists.isEmpty(bulletin)}">
+                        <li class="accordion-item"><a class="accordion-title" href="javascript:void(0)">
+                            <i class="bx bx-chevron-down"></i>主题：[[${bul.bulletinTheme}]]</a>
+                            <div class="accordion-content">
+                                <p>公告时间：[[${bul.releaseTime}]]</p>
+                                <p th:utext="${bul.content}"></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <br><br>
+                <div class="faq-accordion mb-need">
+                    <li><p style="text-align: center;background-color:#f8f7f2;">投诉/建议</p></li>
+                    <ul class="accordion" th:each="userAp:${userAppeal.records}" th:if="${not #lists.isEmpty(userAppeal)}">
+                        <li class="accordion-item"><a class="accordion-title" href="javascript:void(0)">
+                            <i class="bx bx-chevron-down"></i>[[${userAp.title}]]</a>
+                            <div class="accordion-content">
+                                <h4 style="text-align: center;font-weight: bold">用户诉求：</h4>
+                                <br>
+                                <p th:utext="${userAp.detail}"></p>
+                                <br>
+                                <h4 style="text-align: center;font-weight: bold" th:if="${not #lists.isEmpty(userAp.dealWith)}">社区回复：</h4>
+                                <br>
+                                <p th:if="${not #lists.isEmpty(userAp.dealWith)}" th:utext="${userAp.dealWith}"></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+<!--                "../images/slider/slider-bg-1.jpg"/*tpa=http://v.bootstrapmb.com/2021/1/8kqcb9566/assets/images/slider/slider-bg-1.jpg*/-->
+                <div class="hero-slider owl-carousel owl-theme">
+                    <div class="slider-item">
+                        <div class="d-table">
+                            <div class="d-table-cell">
+                                <div class="hero-slider-content">
+                                    <h1>Our community 2022</h1>
+                                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor
+                                        incididunt ut labore et dolore ipsum</p>
+<!--                                    <div class="hero-slider-btn"><a href="shop.html"-->
+<!--                                                                    class="default-btn btn-two">Shop Now </a></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <div class="d-table">
+                            <div class="d-table-cell">
+                                <div class="hero-slider-content">
+                                    <h1>Our community 2022</h1>
+                                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor
+                                        incididunt ut labore et dolore ipsum</p>
+<!--                                    <div class="banner-btn"><a href="shop.html" class="default-btn btn-two">Shop Now-->
+<!--                                    </a></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slider-item">
+                        <div class="d-table">
+                            <div class="d-table-cell">
+                                <div class="hero-slider-content">
+                                    <h1>Our community 2022</h1>
+                                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod tempor
+                                        incididunt ut labore et dolore ipsum</p>
+<!--                                    <div class="banner-btn"><a href="shop.html" class="default-btn btn-two">Shop Now-->
+<!--                                    </a></div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--内容 end-->
+
+<!--2内容中-->
+<section class="services-area pt-70 pb-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-services"><i class="flaticon-free-delivery"></i>
+                    <h3>FREE SHIPPING</h3>
+                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-services"><i class="flaticon-cash-back"></i>
+                    <h3>MONEY BACK GUARANTEE</h3>
+                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-services"><i class="flaticon-secure-payment"></i>
+                    <h3>SAFE PAYMENT</h3>
+                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="single-services"><i class="flaticon-satisfaction"></i>
+                    <h3>CUSTOMER SATISFACTION</h3>
+                    <p>Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--优享服务-->
+<section class="best-selling-area bg-color pt-70 pb-40">
+    <div class="container">
+        <div class="section-title">
+            <h2>优享服务</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6" th:if="${not #lists.isEmpty(serveInfo)}" th:each="ser:${serveInfo.records}">
+                <div class="single-best-selling">
+                    <div class="product-img">
+                        <div class="product" style="height: 200px;"><img th:src="${ser.serveImg}" alt="Image" style="height: 100%;width: 100%"></div>
+                        <div class="product-x" style="height: 200px;"><img th:src="${ser.serveImg}" alt="Image" style="height: 100%;width: 100%"></div>
+                        <div class="cart-btn"><a th:onclick="|payUserInfo(${ser.serveId})|" class="default-btn">我需要 </a></div>
+                        <ul>
+                            <li><a th:onclick="|serveDtl(${ser.serveId})|"><i class="bx bx-shuffle"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="best-selling-content">
+                        <h3><a th:text="${ser.type.typeName}"></a></h3>
+                        <h4><a th:text=" '服务人员：'+ ${ser.serveName}"></a></h4>
+                        <ul>
+                            <li><i class="bx bxs-star"></i></li>
+                            <li><i class="bx bxs-star"></i></li>
+                            <li><i class="bx bxs-star"></i></li>
+                            <li><i class="bx bxs-star"></i></li>
+                            <li><i class="bx bxs-star"></i></li>
+                        </ul><span th:text="'￥'+${ser.serveMoney}"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 未查询到内容提示 -->
+        <div th:if="${#lists.isEmpty(serveInfo.records)}">
+            <h3 style="text-align: center">暂无服务信息</h3>
+        </div>
+    </div>
+
+</section>
+<!--优享服务-->
+
+<!--关于我们-->
+<section class="testimonials-area pt-100 pb-70">
+    <div class="container">
+        <div class="section-title">
+            <h2>关于我们</h2>
+        </div>
+        <div class="testimonials-slider owl-carousel owl-theme">
+            <div class="single-testimonials-box">
+                <ul>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                </ul>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi reiciendis at nihil debitis
+                    maiores,recusandae cum repellat rerum ipsa magni adipisci iure odio consectetur earum</p><i
+                    class="quote bx bxs-quote-alt-right"></i>
+                <div class="testimonials-img"><img th:src="@{/lixa/images/testimonials/testimonial-1.jpg}" alt="Image">
+                    <div class="testimonials-mane">
+                        <h3>Moris Jacker</h3><span>Product Manager</span>
+                    </div>
+                </div>
+            </div>
+            <div class="single-testimonials-box">
+                <ul>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                </ul>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi reiciendis at nihil debitis
+                    maiores,recusandae cum repellat rerum ipsa magni adipisci iure odio consectetur earum</p><i
+                    class="quote bx bxs-quote-alt-right"></i>
+                <div class="testimonials-img"><img th:src="@{/lixa/images/testimonials/testimonial-2.jpg}" alt="Image">
+                    <div class="testimonials-mane">
+                        <h3>Juhon Dew</h3><span>Cloth Company CEO</span>
+                    </div>
+                </div>
+            </div>
+            <div class="single-testimonials-box">
+                <ul>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                    <li><i class="bx bxs-star"></i></li>
+                </ul>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi reiciendis at nihil debitis
+                    maiores,recusandae cum repellat rerum ipsa magni adipisci iure odio consectetur earum</p><i
+                    class="quote bx bxs-quote-alt-right"></i>
+                <div class="testimonials-img"><img th:src="@{/lixa/images/testimonials/testimonial-3.jpg}" alt="Image">
+                    <div class="testimonials-mane">
+                        <h3>Alex Smith</h3><span>Wood Company CEO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 下单信息填写表 -->
+    <div class="modal  product-view-one" id="payUserInfo">
+        <div class="modal-dialog">
+            <div class="modal-content"><button type="button" class="close" data-bs-dismiss="modal"><span
+                    aria-hidden="true"><i class="bx bx-x"></i></span></button>
+                <div class="row align-items-center">
+                    <!-- 左 -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product-view-one-image">
+                            <div id="big" class="owl-carousel owl-theme">
+                                <div class="item">
+                                    <img src="" alt="Image" id="serModalImg">
+                                </div>
+                            </div>
+                            <h3>服务内容：<a id="serModalTypeName"></a></h3>
+                            <h4>价格：￥<a id="serModalMoney"></a></h4>
+                        </div>
+                    </div>
+                    <!-- 右 -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="product-content">
+                            <form action="" id="iNeedForm">
+                                <h3 style="text-align: center">下单信息</h3>
+                                <input th:type="hidden" id="serveId" name="serveId">
+                                <div class="form-group"><label>用户名 <span style="color: red">*</span> </label>
+                                    <input type="text" name="orderUserName" id="name"  class="form-control">
+                                </div>
+
+                                <div class="form-group"><label>手机号 <span style="color: red">*</span> </label>
+                                    <input type="text" name="orderPhone" id="phone"  class="form-control" >
+                                </div>
+
+                                <div class="form-inline" data-toggle="distpicker">
+                                    <label>家庭地址 <span style="color: red">*</span></label>
+                                    <select data-province="福建省" name="province" id="province" class="form-control" ></select>
+                                    <select data-city="福州市" name="city" id="city" class="form-control" ></select>
+                                    <select data-district="闽侯县" name="area" id="area" class="form-control" ></select>
+                                    <input type="text" placeholder="具体地址" name="addr" id="addr" class="form-control">
+                                </div>
+                            </form>
+                            <div class="product-add-to-cart" style="margin-top: 5%">
+                                <button type="button" class="default-btn" th:onclick="|iNeed()|"> 支 付 <i class="flaticon-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--内容end-->
+
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+<script type="text/javascript">
+
+    function serveDtl(serveId){ //报名活动
+        window.location.href = '/user/serveDtl/' + serveId;
+    }
+
+
+    function payUserInfo(serveId){
+
+        var sesUserId = '[[${session.userFrontDesk?.userId}]]';
+        if (sesUserId == '' || sesUserId == null){
+            layer.confirm("请先登录/注册!",{
+                icon:0,title:'温馨提示',
+                btn: ['确定', '暂不']
+            }, function () {
+                // 按钮1的事件
+                window.location.href='/user';
+            }, function(){
+                // 按钮2的事件
+                layer.close();//关闭窗口
+            });
+        }else {
+            $.ajax({
+                type:'GET',
+                url:'/user/serveDtlModal/'+serveId,
+                success:function (res){
+                    $('#serModalImg').attr('src',res.data.serveImg);
+                    $('#serModalTypeName').html(res.data.type.typeName);
+                    $('#serModalMoney').html(res.data.serveMoney);
+                    $('#serveId').val(res.data.serveId);
+                }
+            })
+            $("#payUserInfo").modal('show');
+        }
+    }
+
+    function iNeed(){
+
+        var serModalTypeName = $('#serModalTypeName').html();
+        var serModalMoney = $('#serModalMoney').html();
+        var userId = '[[${session.userFrontDesk?.userId}]]';
+
+        var name = $('#name').val();
+        var phone = $('#phone').val();
+
+        var province = $('#province').val();
+        var city = $('#city').val();
+        var area = $('#area').val();
+        var addr= $('#addr').val();
+
+        if (name=='' || phone=='' || province =='' || city =='' || area == '' || addr == ''){
+            layer.msg("下单信息请填写完整",{icon:2});
+            return false;
+        }
+
+        var iNeedForm = $('#iNeedForm').serialize();
+
+        $.ajax({
+            type:'POST',
+            url:'/user/pay?'+iNeedForm,
+            data:{
+                typeName:serModalTypeName,
+                money:serModalMoney,
+                userId:userId
+            },
+            success:function (res){
+                if (res.code === '0'){
+                    layer.msg("正在跳转支付...",{icon:1});
+                    window.location.href = "/user/pay/index";
+                    // window.open("http://localhost:8080/user/pay/index");
+                }else if (res.code === '-1'){
+                    layer.confirm(res.msg,{
+                        icon:0,title:'订单支付提醒',
+                        btn: ['确定', '暂不']
+                    }, function () {
+                        // 按钮1的事件
+                        window.location.href = "/user";
+                    }, function(){
+                        // 按钮2的事件
+                        layer.close();//关闭窗口
+                    });
+                }
+            }
+        })
+    }
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+</body>
+
+</html>

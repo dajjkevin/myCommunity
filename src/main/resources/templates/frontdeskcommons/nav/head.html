@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<!-- th:fragment 定义需要引入的代码块，该div包含的内容即为引用的公共内容 -->
+<body>
+<div th:fragment="myhead">
+
+
+
+    <header class="header-area">
+        <!--layui-->
+        <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+        <!--富文本编辑器wangEditor-->
+        <script src="https://cdn.staticfile.org/wangEditor/10.0.13/wangEditor.min.js"></script>
+        <!-- wangEditor start   -->
+
+        <!--    <div class="top-header">-->
+        <!--        <div class="container">-->
+        <!--            <div class="row align-items-center">-->
+        <!--                <div class="col-lg-4 col-md-6">-->
+        <!--                </div>-->
+        <!--                <div class="col-lg-4 col-md-6">-->
+        <!--                    <div class="offer-content">-->
+        <!--                        <div class="offer-slider owl-carousel owl-theme">-->
+        <!--                            <p>New Arrival Up To <a href="shop.html">60% Off</a>Shop Now</p>-->
+        <!--                            <p>New Arrival Up To <a href="shop.html">50% Off</a>Shop Now</p>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">-->
+        <!--                    <div class="header-right-content">-->
+        <!--                        <ul class="social-link">-->
+        <!--                            <li><a target="_blank"><i class="bx bxl-airbnb"></i>后台登录</a></li>-->
+        <!--                        </ul>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+
+
+        <div class="navbar-area">
+            <div class="mobile-responsive-nav">
+                <div class="container">
+                    <div class="mobile-responsive-menu">
+                        <div class="logo"><img th:src="@{/xtheme/images/login-logoCom.png}"  style="width: 30px;height: 30px"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="desktop-nav">
+                <div class="container">
+                    <nav class="navbar navbar-expand-md navbar-light"><a class="navbar-brand" href=""><img th:src="@{/xtheme/images/login-logoCom.png}"  style="width: 50px;height: 50px"></a>
+                        <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                            <ul class="navbar-nav">
+                                <li class="nav-item"><a th:href="@{/user/index}" class="nav-link" th:onclick="|saveType('index')|" id="index"> 首页 </a></li>
+                                <li class="nav-item"><a th:href="@{/user/showServe}" class="nav-link" th:onclick="|saveType('showServe')|" id="showServe"> 优享服务 </a></li>
+                                <li class="nav-item"><a th:href="@{/user/showAct}" class="nav-link" th:onclick="|saveType('showAct')|" id="showAct"> 社区活动 </a></li>
+
+                                <li class="nav-item">
+                                    <a data-bs-toggle="modal" th:onclick="|checkAppeal()|" class="nav-link" style="cursor: pointer">投诉/建议箱</a>
+                                </li>
+<!--                                <li class="nav-item"><a class="nav-link" id="myInfo" th:id="myInfo"> 我的 <i class="bx bx-chevron-down"></i></a>-->
+<!--                                    <ul class="dropdown-menu">-->
+<!--                                        <li class="nav-item"><a class="nav-link" th:href="@{/user/myActInfo}" th:onclick="|saveType('myActInfo')|" id="myActInfo">参与活动</a></li>-->
+<!--                                        <li class="nav-item"><a class="nav-link" th:href="@{/user/userHeart}" th:onclick="|saveType('myHeart')|" id="myHeart">我的收藏</a></li>-->
+<!--                                        <li class="nav-item"><a class="nav-link" th:onclick="|checkAppealUserInfo('userAppeal')|" id="userAppeal">投诉/建议</a></li>-->
+<!--                                        <li class="nav-item"><a class="nav-link" th:onclick="|userOrder('userOrder')|" id="userOrder">订单详细</a></li>-->
+<!--                                    </ul>-->
+<!--                                </li>-->
+
+                                <li class="nav-item mega-menu"><a id="myInfo" th:id="myInfo" class="nav-link">我的 <i class="bx bx-chevron-down"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6 class="sub-menu-title">社区活动</h6>
+                                                    <ul class="sub-menu">
+                                                        <li class="nav-item"><a class="nav-link" th:href="@{/user/myActInfo}" th:onclick="|saveType('myActInfo')|" id="myActInfo">参与活动</a></li>
+                                                        <li class="nav-item"><a class="nav-link" th:href="@{/user/userHeart}" th:onclick="|saveType('myHeart')|" id="myHeart">我的收藏</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col">
+                                                    <h6 class="sub-menu-title">社区建议</h6>
+                                                    <ul class="sub-menu">
+                                                        <li class="nav-item"><a class="nav-link" th:onclick="|checkAppealUserInfo('userAppeal')|" id="userAppeal">投诉/建议</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col">
+                                                    <h6 class="sub-menu-title">社区服务</h6>
+                                                    <ul class="sub-menu">
+                                                        <li class="nav-item"><a class="nav-link" th:onclick="|userOrder('userOrder')|" id="userOrder">订单详细</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                            <div class="others-options">
+                                <ul>
+                                    <li th:if="${#strings.isEmpty(session.userFrontDesk)}">
+                                        <a  th:href="@{/user}" th:onclick="|saveType('goLog')|" class="log-in-register">
+                                            <i class="bx bx-user"></i>Log In / Register </a>
+                                    </li>
+                                    <li th:if="${not #strings.isEmpty(session.userFrontDesk)}">
+                                        <span class="burger-menu">
+                                            <a  class="log-in-register">
+                                                <div class="logo">
+                                                    <img img th:src="${session.userFrontDesk?.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${session.userFrontDesk?.userAvatar}"  style="width: 30px;height: 30px">
+                                                    [[${session.userFrontDesk?.userName}]]
+                                                </div>
+                                            </a>
+                                        </span>
+                                    </li>
+                                    <li th:if="${not #strings.isEmpty(session.userFrontDesk)}">
+                                        <a th:href="@{/user/returnUserOrders}" class="cart-icon">
+                                            <i class="bx bx-shopping-bag"></i><span id="total">06</span>
+                                        </a>
+                                    </li>
+<!--                                    <li><button type="button" class="search-btn" data-bs-toggle="modal" data-bs-target="#exampleModalsrc"><i class="bx bx-search"></i></button></li>-->
+<!--                                    <li><span class="burger-menu"><i class="bx bx-menu"></i></span></li>-->
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="others-option-for-responsive">
+                <div class="container">
+                    <div class="dot-menu">
+                        <div class="inner">
+                            <div class="circle circle-one"></div>
+                            <div class="circle circle-two"></div>
+                            <div class="circle circle-three"></div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="option-inner">
+                            <div class="others-option justify-content-center d-flex align-items-center">
+                                <ul>
+                                    <li><span class="burger-menu"><a  class="log-in-register"><i class="bx bx-user"></i> 个人中心 </a></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 建议/投诉模态窗 -->
+        <div class="modal  product-view-one" id="appealModal">
+            <div class="modal-dialog">
+                <div class="modal-content"><button type="button" class="close" data-bs-dismiss="modal"><span
+                        aria-hidden="true"><i class="bx bx-x"></i></span></button>
+                    <div class="row align-items-center">
+                        <form id="appeal">
+                            <div class="row">
+                                <h2 style="text-align: center;color: #c4ab90">投诉与建议</h2>
+                                <input type="hidden" name="userId" th:value="${session.userFrontDesk?.userId}">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label>手机号</label>
+                                            <input type="text" name="uphone" id="uphone"class="form-control">
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div class="form-group">
+                                            <label>电子邮箱</label>
+                                            <input type="email" name="uemail" id="uemail" class="form-control" autocomplete="off" >
+                                            <div class="help-block with-errors"></div>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group">
+                                        <label>标题</label>
+                                        <input type="text" name="title" id="title" class="form-control" autocomplete="off" >
+                                        <label>投诉与建议</label>
+                                        <div id="editor"  style="height:400px;max-height:500px;">
+                                            <p>留下您的投诉与建议内容</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12"><button type="button" th:onclick="|userAppeal()|" class="btn default-btn two">提交</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--右侧个人中心 start-->
+    <div class="sidebar-modal" th:if="${not #strings.isEmpty(session.userFrontDesk)}">
+        <div class="sidebar-modal-inner">
+            <div class="sidebar-header">
+                <div class="sidebar-logo" ><img th:src="@{/xtheme/images/login-logoCom.png}"  style="width: 30px;height: 30px"></div>
+                <span class="close-btn sidebar-modal-close-btn" id="xMyModel"><i class="bx bx-x"></i></span>
+            </div>
+            <div class="recent-product">
+                <h3 th:text="${session.userFrontDesk?.userName}"></h3>
+                <ul>
+                    <li><a th:href="@{/user/userById}"><img th:src="${session.userFrontDesk?.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${session.userFrontDesk?.userAvatar}" alt="image"></a></li>
+                </ul>
+            </div>
+            <div class="contact-us">
+                <h3></h3>
+                <ul>
+                    <li><i class="bx bx-location-plus"></i><p th:text="${session.userFrontDesk?.userAddr[0]}+${session.userFrontDesk?.userAddr[1]}+${session.userFrontDesk?.userAddr[2]}+${session.userFrontDesk?.userAddr[3]}"></p></li>
+                    <br>
+                    <li><i class="bx bx-envelope"></i><a><span class="" data-cfemail="" th:text="${session.userFrontDesk?.email} == null?'暂无':(${session.userFrontDesk?.email}?'暂无':${session.userFrontDesk?.email})"></span></a><a><span class="" data-cfemail=""></span></a></li>
+                    <br>
+                    <li><i class="bx bx-phone-call"></i><p th:text="${session.userFrontDesk?.phone} == null?'暂无':(${session.userFrontDesk?.phone}?'暂无':${session.userFrontDesk?.phone})"></p></li>
+                </ul>
+            </div>
+            <div class="contact-us">
+                <h3>简介</h3>
+                <ul style="border: 1px solid #c9980d;">
+                    <br th:if="${session.userFrontDesk?.userInt} == null">
+                    <li><p th:text="${session.userFrontDesk?.userInt} == null?'暂无简介，快去设置吧~':'${session.userFrontDesk?.userInt}'"></p></li>
+                    <br th:if="${session.userFrontDesk?.userInt} == null">
+                </ul>
+            </div>
+            <div class="contact-us">
+                <h3 ><a th:href="@{/user/userById}">去设置</a></h3>
+            </div>
+            <div class="contact-us">
+                <h3 th:onclick="userLoginOut()">退出系统</h3>
+            </div>
+        </div>
+    </div>
+    <!--右侧end-->
+
+    <!-- 系统退出提示   -->
+    <!--    <div th:insert="~{backcommons/commons/prompt_dialog :: sys_dialog}"></div>-->
+
+    <script type="text/javascript">
+
+        function saveType(s){
+            localStorage.setItem("frontDeskHead",s);
+        }
+
+        let frontHead = localStorage.getItem("frontDeskHead");
+
+        if( frontHead === "index" || frontHead === "showAct" ||
+            frontHead === "myActInfo" || frontHead === "myHeart"
+            || frontHead === "showServe" || frontHead === "resident"
+            || frontHead === "userAppeal" || frontHead === "userOrder")
+        {
+            if (frontHead === 'myActInfo' || frontHead === 'myHeart'){
+                show2(document.getElementById('myInfo'),frontHead);
+            }else if (frontHead === 'goLog'){
+                localStorage.clear();
+            }
+            else{
+                show(frontHead)
+            }
+        } else {
+            localStorage.clear();
+        }
+
+        var str = window.location.href;
+        if (str.indexOf("/user/index") != -1){
+            localStorage.clear();
+            frontHead == 'index';
+            show(frontHead);
+        }
+
+        function show(showId){
+            document.getElementById(showId).className += ' active';
+        }
+
+        function show2(pageD,showId){ //多个页面处理方式
+            pageD.className += ' active';//大标签
+            document.getElementById(showId).className += ' active';
+        }
+
+        function userLoginOut(){
+            layer.confirm("亲，您确定退出吗？",{
+                icon:0,title:'温馨提示',
+                btn: ['确定', '暂不']
+            }, function () {
+                // 按钮1的事件
+                $.ajax({
+                    type:'GET',
+                    url:'/user/userLoginOut',
+                    success:function (res){
+                        if (res.code === '0'){
+                            localStorage.clear();
+                            window.location.href='/user';
+                        }
+                    }
+                })
+            }, function(){
+                // 按钮2的事件
+                layer.close();//关闭窗口
+                $("#xMyModel").click();
+            });
+        }
+
+        function checkAppealUserInfo(){
+            var sesUserId = '[[${session.userFrontDesk?.userId}]]';
+            if (sesUserId == '' || sesUserId == null){
+                layer.confirm("请选登录/注册",{
+                    icon:0,title:'温馨提示',
+                    btn: ['确定', '暂不']
+                }, function () {
+                    // 按钮1的事件 登录界面
+                    window.location.href='/user';
+                }, function(){
+                    // 按钮2的事件
+                    layer.close();//关闭窗口
+                });
+            }else {
+                saveType('userAppeal');
+                window.location.href='/user/userAppealInfo';
+            }
+        }
+
+        function userOrder(){
+            var sesUserId = '[[${session.userFrontDesk?.userId}]]';
+            if (sesUserId == '' || sesUserId == null){
+                layer.confirm("请选登录/注册",{
+                    icon:0,title:'温馨提示',
+                    btn: ['确定', '暂不']
+                }, function () {
+                    // 按钮1的事件 登录界面
+                    window.location.href='/user';
+                }, function(){
+                    // 按钮2的事件
+                    layer.close();//关闭窗口
+                });
+            }else {
+                saveType('userOrder');
+                window.location.href='/user/returnUserOrders';
+            }
+        }
+
+        function checkAppeal(){//检查是是否登录
+            var sesUserId = '[[${session.userFrontDesk?.userId}]]';
+            if (sesUserId == '' || sesUserId == null){
+                layer.confirm("请先登录/注册在进行投诉与建议",{
+                    icon:0,title:'温馨提示',
+                    btn: ['确定', '暂不']
+                }, function () {
+                    // 按钮1的事件
+                    window.location.href='/user';
+                }, function(){
+                    // 按钮2的事件
+                    layer.close();//关闭窗口
+                });
+            }else {
+                $('#appealModal').modal('show');
+            }
+        }
+
+        function userAppeal(){//用户投诉与建议
+
+            var uphone = $('#uphone').val();
+            var uemail = $('#uemail').val();
+            var title = $('#title').val();
+
+            if (uphone=="" && uemail == ""){
+                layer.msg("手机号/邮箱必填一个",{icon:0});
+                $('#uphone').focus();
+                return false;
+            }
+
+            const myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if(!myreg.test(uemail) && uemail != "")
+            {
+                layer.msg("邮箱输入错误，请重新输入！",{icon:0});
+                $('#uemail').focus();
+                return false;
+            }
+
+            if (title ==''){
+                layer.msg("标题不能为空！",{icon:0});
+                $('#title').focus();
+                return false;
+            }
+
+            var details = editor.txt.html();//富文本
+            var appealForm = $("#appeal").serialize();
+
+            var appealData = new FormData();//创建一个表单对象进行添加内容信息
+            appealData.append("details",details);
+
+            $.ajax({
+                type: "POST",
+                url:'/user/userAppeal?'+appealForm,
+                data: appealData,
+                cache: false, //上传文件不需要缓存
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                success: function(res) {
+                    if (res.code == '0' ){
+                        $('#appealModal').modal('hide');
+                        layer.msg("您的投诉/建议，很快会的回复",{icon:1});
+                    } else if(res.code=="-1"){
+                        layer.msg(res.msg,{icon:2});
+                    }
+                }
+            })
+        }
+
+    </script>
+
+    <!--LayUI-->
+    <script th:src="@{/layui/layui.all.js}"></script>
+
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+        // 或者 var editor = new E( document.getElementById('editor') )
+        // 配置服务器端地址
+        editor.customConfig.uploadImgServer = 'http://localhost:8080/upload/editor'
+        //配置指定文件名
+        editor.customConfig.uploadFileName = 'file'
+
+        //如果图片不大，可以用base64存储
+        // editor.customConfig.uploadImgShowBase64 = true
+
+        editor.create()
+
+
+        // window.onload = function (){
+        //     var sesUserId = '[[${session.userFrontDesk?.userId}]]';
+        //     if (sesUserId != "" && sesUserId != null && sesUserId != undefined) {
+        //         $.ajax({
+        //             type:"GET",
+        //             url:"/user/userOrdersCount",
+        //             data:{
+        //                 sesUserId:sesUserId
+        //             },
+        //             success:function (res){
+        //                 if (res.code == '0'){
+        //                     var totalS = "0";
+        //                     if (res.data < 10){
+        //                         totalS = "0" + res.data;
+        //                     }else{
+        //                         totalS = res.data;
+        //                     }
+        //                     $('#total').html(totalS);
+        //                 }
+        //             }
+        //         })
+        //     }
+        // }
+
+        function userEval(eId){
+            alert(eId)
+        }
+
+    </script>
+
+
+</div>
+
+</body>
+</html>

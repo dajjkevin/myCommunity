@@ -1,0 +1,70 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.EvaluateMapper">
+
+    <select id="getEvalByOrderId" parameterType="int" resultMap="findGetEvalByOrderId">
+
+        select * from orders o
+        left join serve s on o.serve_id = s.serve_id
+        left join serve_type st on s.serve_type_id = st.serve_type_id
+        left join evaluate e on o.order_id = e.order_id
+        where o.order_id = #{orderId}
+
+    </select>
+
+    <select id="findUserEvaluate" resultMap="findGetEvalByOrderId">
+
+        select * from orders o
+        inner join serve s on o.serve_id = s.serve_id
+        inner join serve_type st on s.serve_type_id = st.serve_type_id
+        inner join evaluate e on o.order_id = e.order_id
+        inner join user u on o.user_id = u.user_id
+        order by e.e_id desc
+    </select>
+
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“findUserOrdersInfo”  是为了更好识别是位置 -->
+    <resultMap type="Orders" id="findGetEvalByOrderId">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+
+            <id column="order_id" property="orderId" />
+            <id column="order_no" property="orderNo" />
+            <!--        <result column="act_id" property="actTheme" />-->
+            <result column="pay_status" property="payStatus"/>
+            <result column="money" property="money"/>
+            <result column="order_name" property="orderName"/>
+            <result column="order_user_name" property="orderUserName"/>
+            <result column="create_time" property="createTime"/>
+            <result column="pay_time" property="payTime"/>
+            <result column="order_addr" property="orderAddr" typeHandler="com.abc.gcsmsys.handler.StringArrayTypeHandler" /> <!-- 订单地址 -->
+            <result column="order_phone" property="orderPhone"/>
+            <result column="order_status" property="orderStatus"/>
+            <result column="eval_status" property="evalStatus"/>
+        <!-- 组合外键 association -->
+        <association property="serve" javaType="Serve">
+            <id column="serve_id" property="serveId" />
+            <result column="serve_name" property="serveName" />
+            <result column="phone" property="phone" />
+            <result column="serve_int" property="serveInt"/>
+            <result column="serve_money" property="serveMoney"/>
+            <result column="serve_img" property="serveImg"/>
+        </association>
+        <association property="type" javaType="ServeType">
+            <id column="serve_type_id" property="serveTypeId" />
+            <result column="type_name" property="typeName" />
+        </association>
+        <association property="evaluate" javaType="Evaluate">
+            <id column="e_id" property="eId" />
+            <result column="content" property="content" />
+            <result column="e_status" property="eStatus" />
+            <result column="e_time" property="eTime" />
+            <result column="fraction" property="fraction" />
+        </association>
+        <association property="user" javaType="User">
+            <id column="user_id" property="userId" />
+            <result column="user_name" property="userName" />
+            <result column="user_avatar" property="userAvatar" />
+        </association>
+    </resultMap>
+
+</mapper>
+

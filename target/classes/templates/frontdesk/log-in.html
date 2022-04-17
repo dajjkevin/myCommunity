@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+    <title>社区用户登录</title>
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+<!--内容-->
+<section class="user-area log-in-area ptb-100">
+    <div class="container">
+        <div class="user-form-content">
+            <h3>登录</h3>
+            <form class="user-form" id="logForm">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group"><label>账号</label><input class="form-control" type="text" name="name" th:value="${param.name}" ></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group"><label>密码</label><input class="form-control" type="password" name="pwd"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="login-action"><span class="forgot-login"><a href="#">忘记密码?</a></span></div>
+                    </div>
+                    <div class="col-12"><button class="default-btn" th:onclick="|login()|" type="button">Log In </button></div>
+                    <div class="col-12"><span class="or">Or</span></div>
+                    <div class="col-12"><a th:href="@{/user/regi}" class="or-login google"><i class="bx bxl-redux"></i>注册账户 </a></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!--内容 end-->
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<script>
+
+    function login(){
+        var loginForm = $("#logForm").serialize();
+        $.ajax({
+            type: "POST",
+            url:'/user/login',
+            data:loginForm,
+            async:false,//同步，默认true(异步)
+            success: function(res) {
+                if (res.code == '0' ) {
+                    window.location.reload();
+                } else if (res.code=='-1'){
+                    layer.msg(res.msg,{icon:3});//3 警告
+                }
+            }
+        })
+    }
+
+</script>
+
+<!--layui-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+</body>
+
+</html>

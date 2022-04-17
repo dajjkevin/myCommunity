@@ -1,0 +1,59 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.ResidentMapper">
+
+
+    <select id="findPageResi" resultMap="ResidentInfo">
+        SELECT r.*,h.house_Id as houseId,h.house_name
+        FROM resident r
+        LEFT JOIN household h ON h.house_Id=r.house_id
+        WHERE 1=1
+        <if test="search.sName !=null and search.sName !=''">
+            and r.name like CONCAT('%',#{search.sName},'%')
+        </if>
+        <if test="search.sJudge == 0 and search.sAge !=''">
+            and r.age = #{search.sAge}
+        </if>
+        <if test="search.sJudge == 1 and search.sAge !=''">
+            and r.age &lt;= #{search.sAge}
+        </if>
+        <if test="search.sJudge == 2 and search.sAge !=''">
+            and r.age &gt;= #{search.sAge}
+        </if>
+    </select>
+
+    <select id="residentByPersonId" resultMap="ResidentInfo" parameterType="ResidentSearch">
+        select *
+        from resident r,household h
+        where person_id = #{personId}
+        <if test="houseId !='' and houseId != null">
+            and h.house_id= #{houseId}
+        </if>
+    </select>
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“ResidentInfo”  是为了更好识别是位置 -->
+    <resultMap type="Resident" id="ResidentInfo">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+        <id column="person_id" property="personId" />
+        <result column="name" property="name" />
+        <result column="house_id" property="houseId" />
+        <result column="id_card" property="idCard" />
+        <result column="census" property="census" />
+        <result column="birthday" property="birthday" />
+        <result column="ethnic" property="ethnic" />
+        <result column="house_addr" property="houseAddr" typeHandler="com.abc.gcsmsys.handler.StringArrayTypeHandler" /> <!-- 家庭地址 -->
+        <result column="relation" property="relation" />
+        <result column="marital_status" property="maritalStatus" />
+        <result column="culture" property="culture" />
+        <result column="gender" property="gender" />
+        <result column="culture" property="culture" />
+        <!-- 组合外键 association -->
+        <association property="houseHold" javaType="HouseHold">
+            <id column="house_Id" property="houseId" />
+            <result column="house_name" property="houseName" />
+        </association>
+    </resultMap>
+
+
+
+</mapper>
+

@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <META HTTP-EQUIV='pragma' CONTENT='no-cache'>
+    <META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'>
+    <META HTTP-EQUIV='expires' CONTENT='0'>
+
+    <link rel="stylesheet" th:href="@{/lixa/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/boxicons.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/meanmenu.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/style.css}">
+    <link rel="stylesheet" th:href="@{/lixa/css/responsive.css}">
+    <link rel="icon" type="image/png" th:href="@{/lixa/images/favicon.png}">
+    <link rel="icon" href="https://img1.baidu.com/it/u=874447137,1655042583&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" type="image/png">
+
+    <!--layui-->
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+    <title>个人中心</title>
+</head>
+
+<body>
+<div class="preloader">
+    <div class="lds-ripple">
+        <div class="pl-flip-1 pl-flip-2"></div>
+    </div>
+</div>
+
+<!--header start-->
+<div  th:insert="~{frontdeskcommons/nav/head :: myhead}"></div>
+<!--header end-->
+
+
+<section class="blog-details ptb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-details-content">
+                    <div class="blog-details-img">
+                        <img th:src="${userInfo.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${userInfo.userAvatar}" style="width: 60px;height: 60px">
+                        <span class="date">[[${#dates.format(#dates.createNow(), 'dd')}]]
+                            <br>[[${#dates.format(#dates.createNow(), 'MMM')}]]
+                            <br>[[${#dates.format(#dates.createNow(), 'yyyy')}]]
+                        </span></div>
+                    <div class="blog-top-content">
+                        <h3>基本信息</h3>
+                        <form id="contactForm" method="post" th:action="@{/user/upUser}" enctype="multipart/form-data">
+                            <div class="row">
+                                <input type="hidden" th:value="${userInfo.userId}">
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group"><label>用户名</label>
+                                        <input type="text" name="name" id="name" th:value="${userInfo.userName}" class="form-control" disabled style="border-style:none">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group"><label>手机号</label>
+                                        <input type="text" name="phone" id="phone" th:value="${userInfo.phone}" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group"><label>生日</label>
+                                        <input type="date" name="birthday" id="birthday" th:value="${userInfo.birthday} eq null?'2021-01-06':${userInfo.birthday}" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>性别</label>
+                                        <select name="gender" id="gender" class="form-control">
+                                            <option value="0" th:selected="${userInfo.gender} == '0'">男</option>
+                                            <option value="1" th:selected="${userInfo.gender} == '1'">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6" data-toggle="distpicker" id="userDistpicker">
+                                    <div class="form-inline" >
+                                        <label>家庭地址</label>
+                                        <select data-province="福建省" name="province" id="province" class="form-control" ></select>
+                                        <select data-city="福州市" name="city" id="city" class="form-control" ></select>
+                                        <select data-district="闽侯县" name="area" id="area" class="form-control" ></select>
+                                        <input type="text" placeholder="具体地址" name="addr" id="addr" class="form-control" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="form-group">
+                                        <label>头像</label>
+                                        <img id="picImg"  width="200" height="200" class="py-1" style="margin-left: 5%" th:src="${userInfo.userAvatar}==null?'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c':${userInfo.userAvatar}">
+                                        <input type="file" name="userImg" id="userImg" onchange="previewImage(this);" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group"><label>个人简介</label>
+                                        <textarea name="userInt" id="userInt" class="form-control"  cols="30" rows="10" placeholder="快来留下你的内容..."></textarea>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12"><button type="submit" class="default-btn" ><span>确认</span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="widget-sidebar">
+<!--                    <div class="sidebar-widget search">-->
+<!--                        <h3>绑定邮箱</h3>-->
+<!--                        <form class="search-form">-->
+<!--                            <div class="row">-->
+<!--                                <div class="form-group"><label>邮箱</label>-->
+<!--                                    <input type="email" name="email" id="email" class="form-control" required >-->
+<!--                                    <div class="help-block with-errors"></div>-->
+<!--                                </div>-->
+<!--                                <div class="form-group"><label>验证码</label>-->
+<!--                                    <input type="text" name="name" id="name"  class="form-control">-->
+<!--                                </div>-->
+<!--                                <div style="margin-top: 3%"><button type="submit" class="default-btn">提交</button></div>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+                    <div class="sidebar-widget search">
+                        <h3>修改密码</h3>
+                        <form class="search-form">
+                            <div class="row">
+                                <div class="form-group"><label>原密码</label>
+                                    <input type="password" name="oldPwd" id="oldPwd" class="form-control" th:onblur="checkOldPwd()" required >
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>密码</label>
+                                    <input type="password" name="userPwd" id="userPwd"  class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>确认密码</label>
+                                    <input type="password" name="rePwd" id="rePwd"  class="form-control" required th:onchange="ckeckNewPwd()">
+                                </div>
+                                <div style="margin-top: 3%;"><button type="button" class="default-btn" id="updatePwd" th:onclick="userUpdatePwd()" style="display:none;">提交</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--footer start-->
+<div th:insert="~{frontdeskcommons/nav/footer :: myfooter}"></div>
+<!--footer end 页脚、页脚页面内容-->
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+
+<!--背景动画-->
+<script type="text/javascript" th:src="@{/lixa/static/js/ribbon.js}"></script>
+
+
+<!--LayUI-->
+<script th:src="@{/layui/layui.all.js}"></script>
+<!--前端md5加密-->
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script type="text/javascript">
+
+    function checkOldPwd(){
+        var oldPwd = md5($('#oldPwd').val());
+        var userOldPwd = '[[${session.userFrontDesk?.userPwd}]]'
+        if(oldPwd != userOldPwd && oldPwd != 'd41d8cd98f00b204e9800998ecf8427e'){
+            layer.msg("原密码错误！",{icon:2});
+            $('#updatePwd').hide();
+            return false;
+        }else{
+            layer.msg("原密码校验成功！",{icon:1});
+        }
+    }
+
+    function ckeckNewPwd(){
+
+        var oldPwd = md5($('#oldPwd').val());
+        var userOldPwd = '[[${session.userFrontDesk?.userPwd}]]'
+        var oldPwd = md5($('#oldPwd').val());
+        var userPwd = $('#userPwd').val();
+        var rePwd = $('#rePwd').val();
+
+        if (userPwd == ''){
+            layer.msg("新密码输入不为空！",{icon:2});
+            return false;
+        } else if (rePwd != userPwd){
+            layer.msg("两次密码不一致！",{icon:2});
+            $('#updatePwd').hide();
+            $('#rePwd').focus();
+        }else if(oldPwd != userOldPwd && oldPwd != 'd41d8cd98f00b204e9800998ecf8427e'){
+            layer.msg("原密码错误！",{icon:2});
+            $('#updatePwd').hide();
+            return false;
+        }else {
+            $('#updatePwd').show();
+        }
+
+    }
+
+    function userUpdatePwd(){
+
+        var userPwd = $('#userPwd').val();
+        var userId = '[[${session.userFrontDesk?.userId}]]'
+
+        $.ajax({
+            type:'POST',
+            url:'/user/updatePwd',
+            data:{
+                userPwd:userPwd,
+                userId: userId
+            },
+            success:function(res){
+                if (res.code === '0'){
+                    layer.alert("修改密码成功,将重新进行登录",{
+                        btn: ['确定'],icon: 1, closeBtn: 0
+                    }, function () {
+                        // 按钮1的事件
+                        $.ajax({
+                            type:'GET',
+                            url:'/user/userLoginOut',
+                            success:function (res){
+                                if (res.code == '0'){
+                                    window.location.href ='/user';
+                                }
+                            }
+                        })
+                        }
+                    );
+                }
+            }
+        })
+    }
+
+    function userAppealClick(appId){
+        $.ajax({
+            type:'GET',
+            url:'/user/appealById/'+ appId,
+            success:function(res){
+                if (res.code === '0'){
+                    layer.open({
+                        type: 1,
+                        title: '用户投诉与建议',
+                        border:"1px",
+                        // shadeClose: true, //开启点击遮罩关闭层
+                        area : ['35%' ,'400px'],
+                        offset : ['70px', ''],
+                        content:  res.data.detail,    //弹框内容,页面层
+                    });
+                }
+            }
+        });
+    }
+
+    function adminAppealClick(appId){
+        $.ajax({
+            type:'GET',
+            url:'/user/appealById/'+ appId,
+            success:function(res){
+                var dealWith = res.data.dealWith;
+                if (dealWith == '' || dealWith == null){
+                    dealWith = "暂无回复内容";
+                }
+                if (res.code === '0'){
+                    layer.open({
+                        type: 1,
+                        title: '基层人员处理内容',
+                        border:"1px",
+                        // shadeClose: true, //开启点击遮罩关闭层
+                        area : ['35%' ,'400px'],
+                        offset : ['70px', ''],
+                        content: dealWith    //弹框内容,页面层
+                    });
+                }
+            }
+        });
+    }
+
+    // function updateUserBaseInfo(){
+    //     var userBaseInfo = $('#contactForm').serialize();
+    //     $.ajax({
+    //         type:'POST',
+    //         url : '/user/updateUserBase',
+    //         data: userBaseInfo,
+    //         success :function (res){
+    //             if (res.code == '0'){
+    //                 window.location.reload();
+    //                 layer.msg("更新信息成功！",{icon:1});
+    //             }else {
+    //                 layer.msg(res.msg,{icon:2});
+    //             }
+    //         }
+    //     })
+    // }
+
+    function previewImage(file){
+
+        var img = document.getElementById('picImg');
+
+        if (file.files && file.files[0])
+        {
+
+            //准备一个文件读取器对象，并告诉它文件读取完毕之后要做什么。
+            var reader = new FileReader();
+            //成功读取了图片信息后，把读取结果赋予
+
+            //FileReader.readAsDataURL()
+            //开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容。
+            reader.onload = function(evt){
+                img.src= evt.target.result;
+                console.log("read ok! img src get value!"+evt.target.result);
+            }
+
+            console.log("start to read!")
+            reader.readAsDataURL(file.files[0]);
+
+        }
+        else{
+            var gender = $('#gender').val();
+            if (gender == '0'){
+                img.src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fi.qqkou.com%2Fi%2F0a1406481394x2846025398b26.jpg&refer=http%3A%2F%2Fi.qqkou.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649253947&t=deede54935f706da8c8eee1dccfb345c";
+            }else{
+                img.src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0165cb5d14565ca8012155290a6d86.png%402o.png&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1648213883&t=ae062e4657838e19ca98f0d8999e7456";
+            }
+            // alert("no upload file!");
+        }
+
+    }
+
+    function doQuery(pageNum){
+
+        //form表单中含有页数，默认第1页
+        document.forms[0].pageNum.value = pageNum;
+        document.forms[0].submit();
+    }
+
+    window.onload =function(){
+        $("#userDistpicker").distpicker('destroy');
+        $('#userDistpicker').distpicker({//动态赋值
+            //默认不开启distpicker
+            autoSelect: false,
+            province: '[[${session.userFrontDesk?.userAddr[0]}]]',
+            city: '[[${session.userFrontDesk?.userAddr[1]}]]',
+            district: '[[${session.userFrontDesk?.userAddr[2]}]]',
+        });
+        $('#addr').val('[[${session.userFrontDesk?.userAddr[3]}]]');
+    };
+
+
+</script>
+
+
+<div class="go-top"><i class="bx bx-chevrons-up"></i><i class="bx bx-chevrons-up"></i></div>
+<script th:src="@{/lixa/js/jquery.min.js}"></script>
+<script th:src="@{/lixa/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/lixa/js/meanmenu.min.js}"></script>
+<script th:src="@{/lixa/js/owl.carousel.min.js}"></script>
+<script th:src="@{/lixa/js/wow.min.js}"></script>
+<script th:src="@{/lixa/js/form-validator.min.js}"></script>
+<script th:src="@{/lixa/js/contact-form-script.js}"></script>
+<script th:src="@{/lixa/js/ajaxchimp.min.js}"></script>
+<script th:src="@{/lixa/js/range-slider.min.js}"></script>
+<script th:src="@{/lixa/js/custom.js}"></script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-ui-1.9.2.custom.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery-migrate-1.2.1.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+<script th:src="@{/xtheme/js/jquery.nicescroll.js}"></script>
+
+<!--地址联动-->
+<!--<script src="https://cdn.bootcss.com/distpicker/2.0.3/distpicker.js"></script>-->
+<script th:src="@{/xtheme/js/address-linked/distpicker.data.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/distpicker.js}"></script>
+<script th:src="@{/xtheme/js/address-linked/main.js}"></script>
+
+
+</body>
+
+</html>

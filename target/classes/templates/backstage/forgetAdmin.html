@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>找回密码</title>
+<!--    <link rel="stylesheet" th:href="@{/vendor/bootstrap-4.3.1-dist/css/bootstrap.min.css}">-->
+    <link th:href="@{/xtheme/css/style.css}" rel="stylesheet">
+    <link th:href="@{/xtheme/css/style-responsive.css}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+
+    <script th:src="@{/xtheme/js/html5shiv.js}"></script>
+    <script th:src="@{/xtheme/js/respond.min.js}"></script>
+    <![endif]-->
+</head>
+
+<body class="login-body">
+
+<div class="container" style="margin-top: 65px">
+
+    <form class="form-signin" th:action='@{/admin/forgetPwd}' method="post">
+        <div class="form-signin-heading text-center">
+<!--            <h1 class="sign-title">找回密码操作</h1>-->
+            <img th:src="@{/xtheme/images/login-logoCom.png}" height="100px" width="100px" alt=""/>
+        </div>
+        <div class="login-wrap">
+            <input type="text" name="adminEmail" id="email"  class="form-control" placeholder="请输入邮箱"  th:value="${param.adminEmail}" />
+            <div>
+                <div style="display: inline-block">
+                    <input type="text" name="emailCode" class="form-control" placeholder="请输入验证码" style="width: 190px" th:value="${param.emailCode}" />
+                </div>
+                <div style="display: inline-block">
+                    <input type="button" class="btn btn-info" style="width: 95px" th:onclick="sendEmail()" id="getCode" value="获取验证码" />
+                </div>
+            </div>
+            <!-- 错误提示 -->
+            <div class="alert alert-block alert-danger fade in" th:if="${not #strings.isEmpty(err1)}">
+                <button type="button" class="close close-sm" data-dismiss="alert">
+                    <i class="fa fa-times"></i>
+                </button>
+                <strong th:text="${err1}"></strong>
+            </div>
+            <button class="btn btn-lg btn-login btn-block" type="submit">
+                <i class="fa fa-rotate-right"></i>
+            </button>
+            <div class="registration">
+                <a th:onclick="'javascript:toLogin()'" class="fa fa-arrow-circle-o-left"> 去登录 </a>
+            </div>
+        </div>
+    </form>
+
+    <div th:if="${not #strings.isEmpty(success)}">
+        <script>
+            if (confirm("重置成功，去登录")){
+                location.href='[[@{/tologin}]]';
+            }
+        </script>
+    </div>
+</div>
+
+<script>
+
+    function checkMail(){ //邮箱进行验证
+
+        const inputEmail = $('#email').val();
+
+        const myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
+        if (inputEmail == ''){
+            alert("邮箱不能为空！")
+            return 0;
+        }
+
+        if(!myreg.test(inputEmail))
+        {
+            alert("邮箱输入错误，请重新输入！")
+            return 0;
+        }
+            // $('#email').select();
+    }
+
+    function sendEmail(){
+
+        var number = this.checkMail();
+
+        if (number == 0 ){
+            $('#email').select();
+            return;
+        }
+
+        const Email = $('#email').val();//对电子邮件的验证
+        // console.log(Email);//查看邮箱
+
+        $.ajax({
+            type: "GET",
+            url:'/create4Email/'+Email,
+            success: function(res) {
+                if (res.code == '0' ) {
+                    alert("发送成功");
+                    //并开启按钮倒计时/并禁用
+                    const obj = $("#getCode");
+                    settime(obj);
+                } else {
+                    alert(res.msg);
+                    $('#email').select();
+                    return false;
+                }
+            }
+        })
+
+    }
+
+    var countdown=5; //设置倒计时总秒数
+    function settime(obj) {
+
+        if (countdown == 0) {
+            obj.attr('disabled',false);
+            obj.val("获取验证码");
+            countdown=5;
+            return;
+        } else {
+            obj.attr('disabled', true);
+            obj.val("重新发送(" + countdown + "s)");
+            countdown--;
+            setTimeout(function() {  //倒计时函数
+                settime(obj)
+            },1000)
+        }
+    }
+
+    function toLogin(){
+        location.href='[[@{/tologin}]]/';
+    }
+
+</script>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<!-- Placed js at the end of the document so the pages load faster -->
+<!--<script type="text/javascript" th:src="@{/vendor/jquery/jquery-3.3.1.js}"></script>-->
+<script th:src="@{/xtheme/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/xtheme/js/bootstrap.min.js}"></script>
+<script th:src="@{/xtheme/js/modernizr.min.js}"></script>
+
+</body>
+</html>

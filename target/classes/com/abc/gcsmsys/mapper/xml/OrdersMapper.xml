@@ -1,0 +1,84 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.OrderMapper">
+
+    <select id="findUserOrders" parameterType="int" resultMap="findUserOrdersInfo">
+
+        select o.*,s.*,st.* from orders o
+        left JOIN user u on o.user_id = u.user_id
+        left join serve s on o.serve_id = s.serve_id
+        left join serve_type st on s.serve_type_id = st.serve_type_id
+        WHERE u.user_id = #{userId}
+        <if test="orderName !=null and orderName !=''">
+            and o.order_name like CONCAT('%',#{orderName},'%')
+        </if>
+        AND order_status != '2'
+        ORDER by order_id DESC
+    </select>
+
+    <select id="orderById" resultMap="findUserOrdersInfo">
+
+        select * from orders o
+        left join serve s on o.serve_id = s.serve_id
+        left join serve_type st on s.serve_type_id = st.serve_type_id
+        where o.order_no = #{orderNo}
+
+    </select>
+
+    <!--后台订单查看-->
+    <select id="serveOrdersPage" resultMap="findUserOrdersInfo">
+        select * from orders o
+        where 1=1
+        <if test="search.userName != '' and search.userName != null">
+            and o.order_user_name like CONCAT('%',#{search.userName},'%')
+        </if>
+        <if test="search.userPhone != '' and search.userPhone != null">
+            and o.order_phone like  CONCAT('%',#{search.userPhone},'%')
+        </if>
+        <if test="search.startDate != '' and search.startDate != null">
+            and o.create_time like CONCAT(#{search.startDate},'%')
+        </if>
+        <if test="search.endDate != '' and search.endDate != null">
+            and o.create_time like CONCAT(#{search.endDate},'%')
+        </if>
+        <if test="search.orderName != '' and search.orderName != null">
+            and o.order_name like CONCAT('%',#{search.orderName},'%')
+        </if>
+        <if test="search.payStatus != '' and search.payStatus != null">
+            and o.pay_status = #{search.payStatus}
+        </if>
+        ORDER BY o.order_id DESC
+    </select>
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“findUserOrdersInfo”  是为了更好识别是位置 -->
+    <resultMap type="Orders" id="findUserOrdersInfo">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+        <id column="order_id" property="orderId" />
+        <result column="order_no" property="orderNo" />
+        <!--        <result column="act_id" property="actTheme" />-->
+        <result column="pay_status" property="payStatus"/>
+        <result column="money" property="money"/>
+        <result column="order_name" property="orderName"/>
+        <result column="order_user_name" property="orderUserName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="order_addr" property="orderAddr" typeHandler="com.abc.gcsmsys.handler.StringArrayTypeHandler" /> <!-- 订单地址 -->
+        <result column="order_phone" property="orderPhone"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="eval_status" property="evalStatus"/>
+        <!-- 组合外键 association -->
+        <association property="serve" javaType="Serve">
+            <id column="serve_id" property="serveId" />
+            <result column="serve_name" property="serveName" />
+            <result column="phone" property="phone" />
+            <result column="serve_int" property="serveInt"/>
+            <result column="serve_money" property="serveMoney"/>
+            <result column="serve_img" property="serveImg"/>
+        </association>
+        <association property="type" javaType="ServeType">
+            <id column="serve_type_id" property="serveTypeId" />
+            <result column="type_name" property="typeName" />
+        </association>
+    </resultMap>
+
+</mapper>
+

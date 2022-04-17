@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.UserHeartMapper">
+
+    <select id="findUserHeart" resultMap="findUserHeartInfo">
+
+        select * from user_heart uh
+        right  join user u on u.user_id = uh.user_id
+        right  join activity a on uh.act_id = a.act_id
+        where 1=1
+        and uh.user_id = #{userId} and my_heart != '0'
+    </select>
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“findUserPageActInfo”  是为了更好识别是位置 -->
+    <resultMap type="UserHeart" id="findUserHeartInfo">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+        <id column="heart_id" property="heartId" />
+<!--        <result column="act_id" property="actTheme" />-->
+        <result column="user_id" property="userId"/>
+        <result column="my_heart" property="myHeart"/>
+        <!-- 组合外键 association -->
+        <association property="activity" javaType="Activity">
+            <id column="act_id" property="actId" />
+            <result column="act_theme" property="actTheme" />
+            <result column="act_img" property="actImg" />
+            <result column="act_start" property="actStart"/>
+            <result column="act_end" property="actEnd"/>
+            <result column="act_num" property="actNum"/>
+            <result column="act_dtl" property="actDtl"/>
+            <result column="is_open" property="isOpen"/>
+            <result column="act_join_num" property="actJoinNum"/>
+        </association>
+    </resultMap>
+
+</mapper>
+

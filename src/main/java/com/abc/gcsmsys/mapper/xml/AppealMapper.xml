@@ -1,0 +1,38 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.abc.gcsmsys.mapper.AppealMapper">
+
+    <select id="findUserAppeal" resultMap="findUserAppealInfo">
+        select * from appeal ap
+        inner join user u on ap.user_id = u.user_id
+        where 1=1
+        <if test="search.title !=null and search.title !=''">
+            and ap.title like CONCAT('%',#{search.title},'%')
+        </if>
+        <if test="search.replyStatus !=null and search.replyStatus !=''">
+            and ap.reply_status = #{search.replyStatus}
+        </if>
+        <if test="search.userName !=null and search.userName !=''">
+            and u.user_name like CONCAT('%',#{search.userName},'%')
+        </if>
+    </select>
+
+    <!-- resultMap主要解决的是，如何把记录转成对象 同时id=“findUserPageActInfo”  是为了更好识别是位置 -->
+    <resultMap type="Appeal" id="findUserAppealInfo">
+        <!-- 主键用的是id标签  result是其他字段使用的标签 数组“|”类型需要带上转换器-->
+        <id column="appeal_id" property="appealId" />
+        <result column="title" property="title" />
+        <result column="detail" property="detail" />
+        <result column="deal_with" property="dealWith"/>
+        <result column="reply_status" property="replyStatus"/>
+        <result column="uemail" property="uemail"/>
+        <result column="uphone" property="uphone"/>
+        <result column="app_time" property="appTime"/>
+        <!-- 组合外键 association -->
+        <association property="user" javaType="User">
+            <id column="user_id" property="userId" />
+            <result column="user_name" property="userName" />
+        </association>
+    </resultMap>
+
+</mapper>
+
